@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4D Web Design Cosmos — 40 Aesthetics & AI Prompt Engine</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Press+Start+2P&family=Syne:wght@700;800&family=Cinzel:wght@600;800&family=VT323&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        pixel: ['"Press Start 2P"', 'monospace'],
+                        syne: ['"Syne"', 'sans-serif'],
+                        cinzel: ['"Cinzel"', 'serif'],
+                        tui: ['"VT323"', 'monospace'],
+                    },
+                    colors: {
+                        cosmos: {
+                            950: '#030408',
+                            900: '#070913',
+                            850: '#0d1122',
+                            800: '#141a33',
+                            700: '#1e274b',
+                            accent: '#6366f1',
+                            glow: '#38bdf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Smooth Scrolling & Scrollbar */
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #070913; }
+        ::-webkit-scrollbar-thumb { background: #1e274b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+        /* Double-Bezel Hardware Archetype */
+        .double-bezel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.75rem;
+            padding: 0.375rem;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .double-bezel:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7), 0 0 30px -5px rgba(99, 102, 241, 0.15);
+        }
+        .double-bezel-inner {
+            background: #0a0d1d;
+            border-radius: calc(1.75rem - 0.375rem);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            height: 100%;
+        }
+
+        /* 4D Canvas Background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Scanline Overlay for 4D Glitch / Retro */
+        .scanlines {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+        }
+
+        /* Noise Texture */
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* 3D Tilt Card Container */
+        .tilt-card {
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        /* Holographic Gradient Text */
+        .holo-text {
+            background: linear-gradient(135deg, #ffffff 15%, #a5b4fc 40%, #38bdf8 65%, #ec4899 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Audio visualizer bar animation */
+        @keyframes soundWave {
+            0%, 100% { height: 4px; }
+            50% { height: 18px; }
+        }
+        .sound-bar {
+            animation: soundWave 1.2s ease-in-out infinite;
+        }
+        .sound-bar:nth-child(2) { animation-delay: 0.2s; }
+        .sound-bar:nth-child(3) { animation-delay: 0.4s; }
+        .sound-bar:nth-child(4) { animation-delay: 0.1s; }
+    </style>
+</head>
+<body class="bg-[#04060d] text-slate-200 font-sans selection:bg-indigo-500 selection:text-white relative overflow-x-hidden min-h-screen">
+
+    <!-- 4D Ambient Canvas -->
+    <div id="canvas-container"></div>
+    <div class="grain-overlay"></div>
+
+    <!-- Floating Top Bar -->
+    <header class="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3 rounded-full bg-[#0a0e22]/75 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/80">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 via-sky-400 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-display font-bold tracking-tight text-white text-base md:text-lg flex items-center gap-1.5">
+                        4D COSMOS <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono">40 AESTHETICS</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Central Nav Actions -->
+            <div class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-400">
+                <a href="#chameleon" class="hover:text-white transition-colors flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 4D Simulator
+                </a>
+                <a href="#synthesizer" class="hover:text-white transition-colors flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400"></span> Prompt Synthesizer
+                </a>
+                <a href="#encyclopedia" class="hover:text-white transition-colors flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-pink-400"></span> Taxonomy (40)
+                </a>
+                <a href="#temporal-timeline" class="hover:text-white transition-colors flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-sky-400"></span> Time Scrubber
+                </a>
+            </div>
+
+            <!-- Actions: Export & Audio -->
+            <div class="flex items-center gap-3">
+                <!-- Export Matrix Button -->
+                <button onclick="downloadPromptMatrixMarkdown()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-slate-300 transition-all">
+                    <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>EXPORT MATRIX</span>
+                </button>
+
+                <!-- Web Audio Synthesizer Toggle -->
+                <button id="audio-toggle-btn" onclick="toggleAudioEngine()" class="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-slate-300 transition-all">
+                    <div id="sound-indicator" class="flex items-end gap-0.5 h-4">
+                        <div class="sound-bar w-0.5 bg-indigo-400"></div>
+                        <div class="sound-bar w-0.5 bg-sky-400"></div>
+                        <div class="sound-bar w-0.5 bg-pink-400"></div>
+                        <div class="sound-bar w-0.5 bg-emerald-400"></div>
+                    </div>
+                    <span id="audio-label">SOUND: ACTIVE</span>
+                </button>
+
+                <!-- Warp Dimension Button -->
+                <button onclick="warpDimensions()" class="relative group overflow-hidden px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-sky-500 text-white text-xs font-semibold shadow-lg shadow-indigo-500/25 active:scale-95 transition-all">
+                    <span class="relative z-10 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        WARP 4D
+                    </span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 pt-28 pb-32 px-4 md:px-8 max-w-7xl mx-auto space-y-28">
+
+        <!-- ========================================================= -->
+        <!-- HERO SECTION: 4D HYPERDIMENSIONAL ARCHITECTURE -->
+        <!-- ========================================================= -->
+        <section class="relative min-h-[85vh] flex flex-col justify-center items-center text-center pt-8">
+            <!-- Eyebrow Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs tracking-widest uppercase font-mono text-indigo-300 mb-8 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+                <span>The Definitive Multiverse of 40 Web Design Aesthetics & Generative AI Prompts</span>
+            </div>
+
+            <!-- Colossal 4D Headline -->
+            <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[1.08] max-w-5xl">
+                40 WEB DESIGNS. <br class="hidden sm:inline">
+                <span class="holo-text">EVERY DIGITAL MOVEMENT.</span> <br>
+                <span class="text-white/90">TRANSCENDED INTO 4D.</span>
+            </h1>
+
+            <p class="mt-8 text-base sm:text-lg lg:text-xl text-slate-400 max-w-3xl leading-relaxed font-light">
+                Explore the complete anatomical taxonomy of 40 digital design movements from 1993 Web 1.0 to 2035+ Spatial Holography. Featuring interactive <strong class="text-white font-medium">4D WebGL geometry projections</strong>, customizable design tokens, and battle-tested <strong class="text-indigo-300 font-medium">Master AI Prompts</strong> engineered for Midjourney, Flux, v0, Claude, and Antigravity.
+            </p>
+
+            <!-- Temporal HUD Bar (Dimension 4: Time Control & 4D Geometry Switcher) -->
+            <div id="temporal-timeline" class="w-full max-w-4xl mt-12 double-bezel">
+                <div class="double-bezel-inner p-6 sm:p-8 flex flex-col gap-6">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="text-left">
+                            <span class="text-[11px] font-mono tracking-widest text-indigo-400 uppercase">4TH DIMENSION // TEMPORAL CONTINUUM</span>
+                            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                                Current Epoch: <span id="epoch-label" class="text-sky-400 font-mono">2024 — Spatial Modernism</span>
+                            </h2>
+                        </div>
+                        <!-- Geometry Switcher Controls -->
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-xs text-slate-400 font-mono">4D GEOMETRY:</span>
+                            <button onclick="switchGeometry('tesseract')" id="geom-tesseract" class="px-2.5 py-1 text-xs font-mono rounded-md bg-indigo-600 text-white border border-indigo-400">Tesseract</button>
+                            <button onclick="switchGeometry('hypersphere')" id="geom-hypersphere" class="px-2.5 py-1 text-xs font-mono rounded-md bg-white/5 border border-white/10 hover:border-indigo-400 text-slate-300">Glome</button>
+                            <button onclick="switchGeometry('torus')" id="geom-torus" class="px-2.5 py-1 text-xs font-mono rounded-md bg-white/5 border border-white/10 hover:border-indigo-400 text-slate-300">Torus</button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Time Scrubber Slider -->
+                    <div class="relative w-full">
+                        <input id="time-scrubber" type="range" min="1993" max="2035" value="2024" step="1" 
+                               oninput="handleTimeScrub(this.value)" 
+                               class="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500 mt-2">
+                            <span class="hover:text-white cursor-pointer" onclick="setTimeScrubber(1993)">1993 Raw HTML</span>
+                            <span class="hover:text-white cursor-pointer" onclick="setTimeScrubber(2000)">2000 Cyber Y2K</span>
+                            <span class="hover:text-white cursor-pointer" onclick="setTimeScrubber(2008)">2008 Skeuomorphic</span>
+                            <span class="hover:text-white cursor-pointer" onclick="setTimeScrubber(2014)">2014 Flat / Metro</span>
+                            <span class="hover:text-white cursor-pointer" onclick="setTimeScrubber(2021)">2021 Neumorphic</span>
+                            <span class="hover:text-white cursor-pointer" onclick="setTimeScrubber(2024)">2024 Bento / Dark</span>
+                            <span class="hover:text-white cursor-pointer" onclick="setTimeScrubber(2035)">2035+ Spatial 4D</span>
+                        </div>
+                    </div>
+
+                    <div id="epoch-description" class="text-xs sm:text-sm text-slate-400 text-left bg-black/30 p-3.5 rounded-xl border border-white/5 font-mono">
+                        Temporal flux stable: 2024 emphasizes modular Bento cards, high-contrast dark luxury, subtle glass refractions, and spring physics.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Jump Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+                <a href="#encyclopedia" class="px-8 py-4 rounded-full bg-white text-black font-semibold text-sm hover:bg-slate-200 transition-all shadow-xl shadow-white/10 flex items-center gap-2 group">
+                    <span>Explore All 40 Aesthetics</span>
+                    <span class="w-6 h-6 rounded-full bg-black/10 flex items-center justify-center group-hover:translate-x-1 transition-transform">→</span>
+                </a>
+                <a href="#chameleon" class="px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-semibold text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span>Test 4D Chameleon</span>
+                </a>
+                <button onclick="downloadPromptMatrixMarkdown()" class="px-6 py-4 rounded-full bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 font-semibold text-sm hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>Download All 40 Prompts (.md)</span>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- SECTION 2: THE LIVE 4D CHAMELEON SIMULATOR -->
+        <!-- ========================================================= -->
+        <section id="chameleon" class="scroll-mt-28">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 mb-3">
+                    REAL-TIME DESIGN SHIFTER
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+                    The 4D Aesthetic Chameleon
+                </h2>
+                <p class="text-slate-400 mt-4 text-sm sm:text-base">
+                    Click any design preset below to dynamically re-render this live interactive hardware module into that exact visual DNA in real-time. Watch how borders, lights, shadows, typography, and controls morph!
+                </p>
+
+                <!-- Quick Style Selector Pills -->
+                <div class="flex flex-wrap items-center justify-center gap-2 mt-8 max-h-48 overflow-y-auto p-2" id="chameleon-pill-container">
+                    <!-- Populated via JavaScript -->
+                </div>
+            </div>
+
+            <!-- The Live Interactive Morphing Specimen -->
+            <div class="max-w-4xl mx-auto double-bezel p-3 transition-all duration-700" id="chameleon-outer-wrapper">
+                <div id="chameleon-specimen" class="p-8 sm:p-12 transition-all duration-700 relative overflow-hidden" 
+                     style="background: #0f1326; border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+                    
+                    <!-- Chameleon Header -->
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-white/10" id="chameleon-header">
+                        <div>
+                            <span class="text-xs font-mono tracking-widest uppercase opacity-70" id="specimen-style-tag">STYLE DNA: GLASSMORPHISM</span>
+                            <h3 class="text-2xl sm:text-3xl font-bold mt-1 tracking-tight" id="specimen-title">Quantum Cloud Nexus Core</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span class="text-xs font-mono" id="specimen-status">ONLINE 99.98%</span>
+                        </div>
+                    </div>
+
+                    <!-- Chameleon Body Bento Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+                        <!-- Stat Card 1 -->
+                        <div class="p-6 transition-all duration-500 rounded-xl" id="specimen-card-1" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                            <span class="text-xs font-mono uppercase opacity-70">DIMENSIONAL FLUX</span>
+                            <div class="text-3xl font-extrabold mt-2" id="specimen-metric-1">1.84 THz</div>
+                            <p class="text-xs opacity-60 mt-2">+14.2% acceleration vs standard vector space</p>
+                        </div>
+                        <!-- Stat Card 2 -->
+                        <div class="p-6 transition-all duration-500 rounded-xl" id="specimen-card-2" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                            <span class="text-xs font-mono uppercase opacity-70">NEURAL TENSORS</span>
+                            <div class="text-3xl font-extrabold mt-2" id="specimen-metric-2">84.2B</div>
+                            <p class="text-xs opacity-60 mt-2">Zero latency temporal interpolation</p>
+                        </div>
+                        <!-- Stat Card 3 -->
+                        <div class="p-6 transition-all duration-500 rounded-xl" id="specimen-card-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                            <span class="text-xs font-mono uppercase opacity-70">ENERGY PROFILE</span>
+                            <div class="text-3xl font-extrabold mt-2 text-emerald-400" id="specimen-metric-3">OPTIMAL</div>
+                            <p class="text-xs opacity-60 mt-2">Harmonic resonance detected</p>
+                        </div>
+                    </div>
+
+                    <!-- Chameleon Interactive Controls -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-white/10" id="chameleon-footer">
+                        <div class="flex items-center gap-4 w-full sm:w-auto">
+                            <!-- Toggle switch -->
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" checked class="sr-only" onchange="playTone(600, 0.05)">
+                                <div class="w-12 h-6 rounded-full bg-indigo-600 p-1 flex items-center transition-colors" id="specimen-toggle">
+                                    <div class="w-4 h-4 rounded-full bg-white shadow-md transform translate-x-6 transition-transform" id="specimen-toggle-dot"></div>
+                                </div>
+                                <span class="text-xs font-medium" id="specimen-toggle-text">Hyperdrive Auto-Stabilize</span>
+                            </label>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                            <button id="specimen-btn-sec" onclick="playTone(350, 0.08)" class="px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all border">
+                                Secondary Opt
+                            </button>
+                            <button id="specimen-btn-pri" onclick="playTone(750, 0.12); pulseSpecimen();" class="px-7 py-2.5 rounded-full text-xs font-bold tracking-wide transition-all shadow-lg">
+                                Deploy Specimen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Specimen Fine-Tuner HUD -->
+                <div class="mt-4 p-4 rounded-2xl bg-black/40 border border-white/5 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+                    <span class="text-slate-400">FINE-TUNE TOKENS:</span>
+                    <div class="flex items-center gap-3">
+                        <label class="text-slate-500">Radius: <span id="val-radius" class="text-indigo-400">24px</span></label>
+                        <input type="range" min="0" max="48" value="24" oninput="tweakSpecimenRadius(this.value)" class="w-24 h-1.5 bg-slate-800 rounded appearance-none accent-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="text-slate-500">Elevation: <span id="val-shadow" class="text-sky-400">Normal</span></label>
+                        <input type="range" min="1" max="4" value="2" oninput="tweakSpecimenElevation(this.value)" class="w-24 h-1.5 bg-slate-800 rounded appearance-none accent-sky-500">
+                    </div>
+                    <button onclick="resetSpecimenFineTuning()" class="text-indigo-400 hover:text-indigo-300">Reset</button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- SECTION 3: THE MASTER PROMPT SYNTHESIZER TOOL -->
+        <!-- ========================================================= -->
+        <section id="synthesizer" class="scroll-mt-28">
+            <div class="double-bezel">
+                <div class="double-bezel-inner p-8 sm:p-12">
+                    <div class="max-w-3xl mb-8">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-mono text-indigo-400 mb-3">
+                            AI PROMPT COMPILER
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white">
+                            Universal Web Design Prompt Synthesizer
+                        </h2>
+                        <p class="text-slate-400 mt-2 text-sm sm:text-base">
+                            Configure your desired design style from all 40 movements, choose your industry, and select your target AI engine to compile a tailored prompt.
+                        </p>
+                    </div>
+
+                    <!-- Builder Controls -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <!-- 1. Design Style -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-mono text-slate-400">1. AESTHETIC STYLE (40)</label>
+                            <select id="synth-style" onchange="compilePrompt()" class="w-full bg-[#11162d] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+                                <!-- Populated via JS -->
+                            </select>
+                        </div>
+
+                        <!-- 2. Project Type -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-mono text-slate-400">2. APPLICATION TYPE</label>
+                            <select id="synth-type" onchange="compilePrompt()" class="w-full bg-[#11162d] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+                                <option value="SaaS AI Analytics Platform">SaaS AI Analytics Platform</option>
+                                <option value="Luxury Horology & Timepiece Brand">Luxury Horology & Timepiece Brand</option>
+                                <option value="Web3 Decentralized Protocol">Web3 Decentralized Protocol</option>
+                                <option value="Creative Agency & Studio Portfolio">Creative Agency & Studio Portfolio</option>
+                                <option value="FinTech Personal Wealth App">FinTech Personal Wealth App</option>
+                                <option value="Autonomous Robotics Command Center">Autonomous Robotics Command Center</option>
+                                <option value="E-Commerce Fashion Flagship">E-Commerce Fashion Flagship</option>
+                                <option value="Electronic Underground Music Festival">Electronic Underground Music Festival</option>
+                                <option value="Clean Solar Energy Infrastructure">Clean Solar Energy Infrastructure</option>
+                                <option value="Architectural Blueprint Studio">Architectural Blueprint Studio</option>
+                            </select>
+                        </div>
+
+                        <!-- 3. Color Mood -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-mono text-slate-400">3. CHROMATIC MOOD</label>
+                            <select id="synth-color" onchange="compilePrompt()" class="w-full bg-[#11162d] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+                                <option value="Obsidian & Titanium with Champagne Gold">Obsidian & Titanium with Champagne Gold</option>
+                                <option value="Frosted Ice Cyan with Neon Magenta">Frosted Ice Cyan with Neon Magenta</option>
+                                <option value="Acid Lime & Electric Violet on Jet Black">Acid Lime & Electric Violet on Jet Black</option>
+                                <option value="Monochrome Swiss High-Contrast with Vermilion">Monochrome Swiss High-Contrast with Vermilion</option>
+                                <option value="Tactical Matte Carbon with Signal Orange">Tactical Matte Carbon with Signal Orange</option>
+                                <option value="Soft Earthen Moss Green & Warm Clay Linen">Soft Earthen Moss Green & Warm Clay Linen</option>
+                                <option value="Sunny Canary Yellow & Lavender Pastel">Sunny Canary Yellow & Lavender Pastel</option>
+                                <option value="Prussian Blueprint Cyanotype with White Drafting Grids">Prussian Blueprint Cyanotype with White Drafting Grids</option>
+                                <option value="Polished Antique Brass & Rich Mahogany Wood">Polished Antique Brass & Rich Mahogany Wood</option>
+                            </select>
+                        </div>
+
+                        <!-- 4. Target Generator -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-mono text-slate-400">4. TARGET GENERATOR</label>
+                            <select id="synth-target" onchange="compilePrompt()" class="w-full bg-[#11162d] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+                                <option value="Midjourney v6.0">Midjourney v6.0</option>
+                                <option value="Flux.1 Pro / Schnell">Flux.1 Pro / Schnell</option>
+                                <option value="v0 / Claude 3.5 Sonnet / Antigravity (Code)">v0 / Claude / Antigravity (Code)</option>
+                                <option value="DALL-E 3">DALL-E 3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Output Terminal Box -->
+                    <div class="relative rounded-2xl bg-black/60 border border-white/10 p-6 font-mono text-sm">
+                        <div class="flex items-center justify-between pb-4 mb-4 border-b border-white/10 text-xs text-slate-400">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+                                <span class="ml-2 text-slate-300">COMPILED_PROMPT.md</span>
+                            </div>
+                            <span class="text-[11px] text-emerald-400">OPTIMIZED & VERIFIED</span>
+                        </div>
+
+                        <p id="synth-output-text" class="text-slate-200 leading-relaxed select-all">
+                            Initializing prompt engine...
+                        </p>
+
+                        <!-- Copy Button -->
+                        <div class="mt-6 flex flex-wrap items-center justify-end gap-3">
+                            <button onclick="copySynthesizedPrompt()" class="px-6 py-2.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all active:scale-95">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                <span id="synth-copy-label">Copy Synthesized Prompt</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- SECTION 4: THE 40 STYLES ENCYCLOPEDIA & PROMPT DIRECTORY -->
+        <!-- ========================================================= -->
+        <section id="encyclopedia" class="scroll-mt-28">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-xs font-mono text-pink-400 mb-3">
+                        COMPREHENSIVE TAXONOMY (40 MOVEMENTS)
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+                        The 40 Canonical Eras of Web Design
+                    </h2>
+                    <p class="text-slate-400 mt-3 text-base max-w-2xl">
+                        Every significant aesthetic, its visual anatomy, design tokens, exact AI prompt, and copyable CSS blueprint.
+                    </p>
+                </div>
+
+                <!-- Search Input & Quick Matrix Download -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+                    <div class="relative w-full sm:w-80">
+                        <input id="style-search-input" oninput="filterStyles()" type="text" placeholder="Search 40 styles (e.g. glass, retro, minimal)..." 
+                               class="w-full bg-[#0d122b] border border-white/10 rounded-full px-5 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 pl-11">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-4 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <button onclick="downloadPromptMatrixMarkdown()" title="Download complete markdown cheat-sheet" class="px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-slate-300 transition-all flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>Download .MD</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar" id="category-tabs">
+                <button onclick="setCategoryFilter('ALL')" class="category-btn active px-4 py-2 rounded-full text-xs font-mono border transition-all bg-indigo-600 text-white border-indigo-500" data-cat="ALL">
+                    ALL (40)
+                </button>
+                <button onclick="setCategoryFilter('MODERN_MINIMAL')" class="category-btn px-4 py-2 rounded-full text-xs font-mono border transition-all bg-white/5 text-slate-300 border-white/10 hover:border-white/20" data-cat="MODERN_MINIMAL">
+                    MINIMAL & EDITORIAL (8)
+                </button>
+                <button onclick="setCategoryFilter('SPATIAL_3D')" class="category-btn px-4 py-2 rounded-full text-xs font-mono border transition-all bg-white/5 text-slate-300 border-white/10 hover:border-white/20" data-cat="SPATIAL_3D">
+                    SPATIAL & 3D (4)
+                </button>
+                <button onclick="setCategoryFilter('TACTILE_SKEUOMORPH')" class="category-btn px-4 py-2 rounded-full text-xs font-mono border transition-all bg-white/5 text-slate-300 border-white/10 hover:border-white/20" data-cat="TACTILE_SKEUOMORPH">
+                    TACTILE & SKEUOMORPH (6)
+                </button>
+                <button onclick="setCategoryFilter('RETRO_NOSTALGIA')" class="category-btn px-4 py-2 rounded-full text-xs font-mono border transition-all bg-white/5 text-slate-300 border-white/10 hover:border-white/20" data-cat="RETRO_NOSTALGIA">
+                    RETRO & NOSTALGIA (9)
+                </button>
+                <button onclick="setCategoryFilter('CYBER_EXPERIMENTAL')" class="category-btn px-4 py-2 rounded-full text-xs font-mono border transition-all bg-white/5 text-slate-300 border-white/10 hover:border-white/20" data-cat="CYBER_EXPERIMENTAL">
+                    CYBER & EXPERIMENTAL (13)
+                </button>
+            </div>
+
+            <!-- Dynamic Grid of 40 Styles -->
+            <div id="styles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <!-- Injected via JavaScript below -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- DEEP-DIVE MODAL FOR FULL THESIS & TOKENS -->
+    <!-- ========================================================= -->
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto double-bezel bg-[#070915] text-slate-200">
+            <div class="double-bezel-inner p-8 sm:p-12">
+                <!-- Modal Close Button -->
+                <button onclick="closeModal()" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                    ✕
+                </button>
+
+                <div id="modal-content">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Haptic Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3 px-5 py-3 rounded-full bg-indigo-600 text-white font-mono text-xs shadow-2xl shadow-indigo-500/40 border border-indigo-400">
+        <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+        <span id="toast-text">Prompt copied to clipboard!</span>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- COMPLETE DATA & JAVASCRIPT ENGINE (40 STYLES COMPLETE) -->
+    <!-- ========================================================= -->
+    <script>
+        /* -------------------------------------------------------------
+           1. WEB AUDIO SYNTHESIZER ENGINE (Haptic 4D Feedback)
+           ------------------------------------------------------------- */
+        let audioCtx = null;
+        let isAudioMuted = false;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playTone(freq = 440, duration = 0.08, type = 'sine') {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.5, ctx.currentTime + duration);
+
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function toggleAudioEngine() {
+            isAudioMuted = !isAudioMuted;
+            const label = document.getElementById('audio-label');
+            const bars = document.querySelectorAll('.sound-bar');
+            if (isAudioMuted) {
+                label.innerText = 'SOUND: MUTED';
+                bars.forEach(b => b.style.animationPlayState = 'paused');
+                showToast('Audio Synthesizer Muted');
+            } else {
+                label.innerText = 'SOUND: ACTIVE';
+                bars.forEach(b => b.style.animationPlayState = 'running');
+                playTone(520, 0.1, 'triangle');
+                showToast('Audio Synthesizer Active');
+            }
+        }
+
+        /* -------------------------------------------------------------
+           2. THREE.JS 4D PROJECTION & GEOMETRIES
+           ------------------------------------------------------------- */
+        let scene, camera, renderer, tesseractGroup, starfield;
+        let tesseractVertices = [];
+        let tesseractEdges = [];
+        let rotationAngle = 0;
+        let hyperSpeed = 0.008;
+        let currentGeometryMode = 'tesseract';
+
+        function initThreeJS() {
+            const container = document.getElementById('canvas-container');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 28;
+
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            tesseractGroup = new THREE.Group();
+
+            // Generate 16 vertices of a 4D hypercube in [-1, 1]^4
+            for (let i = 0; i < 16; i++) {
+                tesseractVertices.push([
+                    (i & 1) ? 1 : -1,
+                    (i & 2) ? 1 : -1,
+                    (i & 4) ? 1 : -1,
+                    (i & 8) ? 1 : -1
+                ]);
+            }
+
+            // Find all 32 edges connecting vertices that differ by only 1 bit
+            for (let i = 0; i < 16; i++) {
+                for (let j = i + 1; j < 16; j++) {
+                    const diff = i ^ j;
+                    if ((diff & (diff - 1)) === 0) {
+                        tesseractEdges.push([i, j]);
+                    }
+                }
+            }
+
+            // Starfield
+            const starGeo = new THREE.BufferGeometry();
+            const starCount = 650;
+            const starPos = new Float32Array(starCount * 3);
+            for (let i = 0; i < starCount * 3; i += 3) {
+                starPos[i] = (Math.random() - 0.5) * 140;
+                starPos[i + 1] = (Math.random() - 0.5) * 140;
+                starPos[i + 2] = (Math.random() - 0.5) * 80;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+            const starMat = new THREE.PointsMaterial({
+                color: 0x4f46e5,
+                size: 0.8,
+                transparent: true,
+                opacity: 0.4
+            });
+            starfield = new THREE.Points(starGeo, starMat);
+            scene.add(starfield);
+
+            const ambient = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambient);
+            scene.add(tesseractGroup);
+
+            window.addEventListener('resize', onWindowResize, false);
+            document.addEventListener('mousemove', onMouseMove, false);
+
+            animateThree();
+        }
+
+        function project4D(v, angle) {
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+
+            let x = v[0], y = v[1], z = v[2], w = v[3];
+
+            // Rotation in XW & YZ planes
+            let x1 = x * cos - w * sin;
+            let w1 = x * sin + w * cos;
+            let y1 = y * cos - z * sin;
+            let z1 = y * sin + z * cos;
+
+            const distance = 2.4;
+            const factor = distance / (distance - w1);
+            return new THREE.Vector3(x1 * factor * 5.5, y1 * factor * 5.5, z1 * factor * 5.5);
+        }
+
+        function updateGeometry() {
+            while (tesseractGroup.children.length > 0) {
+                const obj = tesseractGroup.children[0];
+                tesseractGroup.remove(obj);
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) obj.material.dispose();
+            }
+
+            rotationAngle += hyperSpeed;
+
+            if (currentGeometryMode === 'tesseract') {
+                const projected3D = tesseractVertices.map(v => project4D(v, rotationAngle));
+                const linePositions = [];
+                tesseractEdges.forEach(edge => {
+                    const p1 = projected3D[edge[0]];
+                    const p2 = projected3D[edge[1]];
+                    linePositions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+                });
+
+                const lineGeo = new THREE.BufferGeometry();
+                lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+                const lineMat = new THREE.LineBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.3 });
+                tesseractGroup.add(new THREE.LineSegments(lineGeo, lineMat));
+
+                const sphereGeo = new THREE.SphereGeometry(0.2, 8, 8);
+                const sphereMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.6 });
+                projected3D.forEach(p => {
+                    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+                    mesh.position.copy(p);
+                    tesseractGroup.add(mesh);
+                });
+            } else if (currentGeometryMode === 'hypersphere') {
+                // 4D Glome / Hypersphere concentric lattice
+                const ringGeo = new THREE.TorusGeometry(7, 0.08, 16, 64);
+                const ringMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.4, wireframe: true });
+                const r1 = new THREE.Mesh(ringGeo, ringMat);
+                r1.rotation.x = rotationAngle * 1.5;
+                r1.rotation.y = rotationAngle;
+                tesseractGroup.add(r1);
+
+                const ringGeo2 = new THREE.TorusGeometry(4.5, 0.08, 16, 64);
+                const ringMat2 = new THREE.MeshBasicMaterial({ color: 0xec4899, transparent: true, opacity: 0.5, wireframe: true });
+                const r2 = new THREE.Mesh(ringGeo2, ringMat2);
+                r2.rotation.y = -rotationAngle * 2;
+                r2.rotation.z = rotationAngle;
+                tesseractGroup.add(r2);
+            } else if (currentGeometryMode === 'torus') {
+                // Clifford Torus
+                const torusGeo = new THREE.TorusKnotGeometry(6, 1.2, 80, 16);
+                const torusMat = new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.28, wireframe: true });
+                const torusMesh = new THREE.Mesh(torusGeo, torusMat);
+                torusMesh.rotation.x = rotationAngle;
+                torusMesh.rotation.y = rotationAngle * 0.7;
+                tesseractGroup.add(torusMesh);
+            }
+        }
+
+        function switchGeometry(mode) {
+            currentGeometryMode = mode;
+            ['tesseract', 'hypersphere', 'torus'].forEach(m => {
+                const btn = document.getElementById(`geom-${m}`);
+                if (btn) {
+                    if (m === mode) {
+                        btn.className = 'px-2.5 py-1 text-xs font-mono rounded-md bg-indigo-600 text-white border border-indigo-400';
+                    } else {
+                        btn.className = 'px-2.5 py-1 text-xs font-mono rounded-md bg-white/5 border border-white/10 hover:border-indigo-400 text-slate-300';
+                    }
+                }
+            });
+            playTone(550, 0.1, 'triangle');
+            showToast(`4D Geometry: ${mode.toUpperCase()} Projections Active`);
+        }
+
+        let mouseX = 0, mouseY = 0;
+        function onMouseMove(e) {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
+        }
+
+        function animateThree() {
+            requestAnimationFrame(animateThree);
+            updateGeometry();
+
+            tesseractGroup.rotation.y += 0.001;
+            tesseractGroup.rotation.x += 0.0008;
+
+            camera.position.x += (mouseX * 15 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 15 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            if (starfield) starfield.rotation.y -= 0.0004;
+
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function warpDimensions() {
+            playTone(880, 0.25, 'sawtooth');
+            hyperSpeed = 0.08;
+            showToast('Dimension Warped! 4D Hyper Speed Amplified');
+            setTimeout(() => { hyperSpeed = 0.008; }, 1200);
+        }
+
+        /* -------------------------------------------------------------
+           3. THE DEFINITIVE 40 WEB DESIGN AESTHETICS TAXONOMY
+           ------------------------------------------------------------- */
+        const WEB_STYLES = [
+            // 1. Neumorphism
+            {
+                id: 'neumorphism',
+                name: 'Neumorphism (Soft UI)',
+                category: 'TACTILE_SKEUOMORPH',
+                era: '2019 — 2021',
+                summary: 'Extruded tactile plastic surfaces created through dual opposing light and dark soft box-shadows.',
+                philosophy: 'Strikes a minimal bridge between flat design and skeuomorphism by treating the UI canvas as a single sheet of pliable, extruded clay or plastic where components pop outward or press inward.',
+                colors: ['#E0E5EC', '#A3B1C6', '#FFFFFF', '#38BDF8'],
+                typography: 'Plus Jakarta Sans / Inter, Medium weight, low stark contrast',
+                prompt: 'Photorealistic UI design of an ultra-clean smart home dashboard in Neumorphism (Soft UI) style. Single monochromatic off-white surface (#e0e5ec), soft dual-directional extruded drop shadows (top-left inset white highlight, bottom-right soft diffuse ambient shadow), convex circular dials, tactile recessed toggle switches, pristine minimalist typography in Plus Jakarta Sans, soft teal active LED status indicators, 8k resolution, modern UX UI design --v 6.0 --ar 16:9',
+                cssRules: `background: #e0e5ec;\nbox-shadow: 12px 12px 24px #b8b9be,\n            -12px -12px 24px #ffffff;\nborder-radius: 24px;\ncolor: #4a5568;\nborder: none;`,
+                whenToUse: 'Tactile consumer dashboards, IoT remote controls, smart device controllers, audio equipment apps.',
+                whenToAvoid: 'Data-dense enterprise apps, accessible government portals (fails WCAG contrast requirements).'
+            },
+            // 2. Glassmorphism
+            {
+                id: 'glassmorphism',
+                name: 'Glassmorphism (Frosted Glass & VisionOS)',
+                category: 'SPATIAL_3D',
+                era: '2020 — Present',
+                summary: 'Multi-layered translucent frosted glass cards with specular highlights and vivid ambient background blur.',
+                philosophy: 'Establishes spatial hierarchy through physical optical depth, refraction, and luminous backdrop filtering, popularized by macOS Big Sur and Apple VisionOS.',
+                colors: ['#0A0E27', 'rgba(255,255,255,0.08)', '#38BDF8', '#EC4899'],
+                typography: 'Geist / Space Grotesk / SF Pro Display with high optical clarity',
+                prompt: 'Awwwards-winning landing page for an AI quantum computing platform designed in Glassmorphism (Frosted Glass) aesthetic. Deep dark background with glowing organic cyan and magenta radial gradient spheres. Translucent floating bento cards with multi-layered heavy frosted backdrop blur, razor-thin luminous glass edges, glowing neon typography in Geist, refractive optical highlights, sleek spatial depth, high-end Apple VisionOS visual language --ar 16:9 --v 6.0',
+                cssRules: `background: rgba(255, 255, 255, 0.06);\nbackdrop-filter: blur(20px);\n-webkit-backdrop-filter: blur(20px);\nborder: 1px solid rgba(255, 255, 255, 0.15);\nborder-radius: 24px;\nbox-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);`,
+                whenToUse: 'Modern AI tools, Web3 crypto platforms, luxury technology sites, spatial audio & computing apps.',
+                whenToAvoid: 'Heavy legacy browsers, budget low-end mobile devices where backdrop-blur repaints kill FPS.'
+            },
+            // 3. Neo-Brutalism
+            {
+                id: 'neo-brutalism',
+                name: 'Neo-Brutalism (Pop Brutalism)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2022 — Present',
+                summary: 'Stark 3px solid black outlines, un-blurred offset drop shadows, and high-energy saturated pastel palettes.',
+                philosophy: 'Rejects sterile corporate sameness in favor of playful rebelliousness, tactile comic-book geometry, and high-contrast intentional awkwardness, as seen on Figma, Gumroad, and Retro tech tools.',
+                colors: ['#FFE600', '#FF6B6B', '#A78BFA', '#000000'],
+                typography: 'Chunky Grotesk (Lexend, Archivo Black, Public Sans)',
+                prompt: 'Trendy SaaS web landing page for a creator monetization app in Neo-Brutalism style. Stark high-contrast design with 3px solid black borders, hard non-diffused 4px black box-shadows, electric pastel palette of canary yellow (#FFE600), vivid lavender, and mint green. Chunky quirky sans-serif typography, asymmetrical bento layout, high-energy sticker tags with rotating badges, playful Gumroad and Figma aesthetic, clean and punchy UI --ar 16:9 --v 6.0',
+                cssRules: `background: #FFE600;\nborder: 3px solid #000000;\nbox-shadow: 5px 5px 0px #000000;\nborder-radius: 12px;\ncolor: #000000;\nfont-weight: 700;`,
+                whenToUse: 'Creator economy platforms, youth marketing, developer tools, portfolio websites, design agencies.',
+                whenToAvoid: 'Conservative financial institutions, medical software, enterprise compliance dashboards.'
+            },
+            // 4. Industrial Brutalism
+            {
+                id: 'industrial-brutalism',
+                name: 'Industrial Brutalism & Cyber-Terminal',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2023 — Present',
+                summary: 'Raw technical coordinate grids, military terminal aesthetics, monospace telemetry, and blueprint precision.',
+                philosophy: 'Draws from avionics HUDs, declassified blueprints, and aerospace telemetry to evoke raw mechanical engineering authority and de-embellished computational authenticity.',
+                colors: ['#0E1116', '#FF5500', '#00E5FF', '#8B949E'],
+                typography: 'JetBrains Mono / Space Mono / IBM Plex Mono',
+                prompt: 'Industrial Brutalist tactical web interface for an autonomous robotics drone fleet system. Swiss typography fused with military terminal aesthetics: rigid technical coordinate grid, exposed wireframe containers, stark monospace data readouts in JetBrains Mono, matte carbon grey (#111317) with tactical signal orange (#FF5500) and blueprint cyan highlights, CAD schematics, crosshairs, micro-status telemetry badges, RAW utilitarian architecture --ar 16:9 --v 6.0',
+                cssRules: `background: #0E1116;\nborder: 1px solid rgba(255, 85, 0, 0.3);\nfont-family: 'JetBrains Mono', monospace;\nbox-shadow: inset 0 0 15px rgba(255, 85, 0, 0.05);\nborder-radius: 4px;`,
+                whenToUse: 'DevOps platforms, cybersecurity hubs, hardware IoT telemetry, defense tech, robotics cockpits.',
+                whenToAvoid: 'Lifestyle fashion, food delivery, mass-market consumer e-commerce.'
+            },
+            // 5. Swiss Minimalism
+            {
+                id: 'swiss-minimalism',
+                name: 'Minimalism & Swiss International Style',
+                category: 'MODERN_MINIMAL',
+                era: '1950s — Timeless Modern',
+                summary: 'Rigid mathematical grids, extreme negative whitespace, colossal typographic hierarchy, zero ornamentation.',
+                philosophy: 'Rooted in the Bauhaus and 1950s Swiss International Typographic Style (Max Bill, Josef Müller-Brockmann). Form strictly follows function; typography itself becomes the visual architecture.',
+                colors: ['#000000', '#FFFFFF', '#E63946', '#71717A'],
+                typography: 'Neue Haas Grotesk / Plus Jakarta Sans / Akzidenz-Grotesk',
+                prompt: 'Museum-grade architecture studio portfolio website designed in pure Swiss International Style (Minimalism). Monochrome black and white with a single Vermilion red accent. Strict 12-column grid layout, colossal typographic hierarchy with bold grotesque headline paired with razor-sharp editorial text, immense negative whitespace, zero decorative shadows or borders, documentary photography layouts, Bauhaus purity and poise --ar 16:9 --v 6.0',
+                cssRules: `background: #ffffff;\ncolor: #000000;\nborder: none;\npadding: 4rem;\nfont-family: 'Plus Jakarta Sans', sans-serif;\nletter-spacing: -0.04em;`,
+                whenToUse: 'Architecture firms, high-end design agencies, art galleries, luxury fashion houses, editorial journals.',
+                whenToAvoid: 'Gamified consumer apps, noisy children-focused interfaces, discount retail clearance.'
+            },
+            // 6. Dark Luxury
+            {
+                id: 'dark-luxury',
+                name: 'Dark Mode Luxury (Obsidian & Champagne)',
+                category: 'MODERN_MINIMAL',
+                era: '2023 — Present',
+                summary: 'Vantablack and obsidian backgrounds, whisper-thin brushed champagne hairlines, and high-contrast serif poise.',
+                philosophy: 'Translates the tactile ambiance of five-star horology boutiques, private jets, and A24 cinematic films into an ultra-restrained digital medium characterized by deep blacks and metallic restraint.',
+                colors: ['#07080A', '#D4AF37', '#1F2229', '#F5F5F7'],
+                typography: 'Playfair Display / PP Editorial New paired with micro-grotesk accents',
+                prompt: 'Ultra-luxury bespoke horology and private aviation web platform. Dark Mode Luxury aesthetic: deepest matte obsidian black (#08080A), refined brushed champagne gold and titanium accents, elegant high-contrast editorial serif typography for headings, double-bezel cards with whisper-thin 1px gold borders, subtle film-grain texture, cinematic editorial photography, A24 and Apple Pro visual elegance --ar 16:9 --v 6.0',
+                cssRules: `background: #07080a;\nborder: 1px solid rgba(212, 175, 55, 0.25);\nbox-shadow: 0 25px 50px rgba(0, 0, 0, 0.9),\n            inset 0 1px 1px rgba(212, 175, 55, 0.15);\nborder-radius: 20px;`,
+                whenToUse: 'High-ticket luxury goods, fine watchmaking, private wealth offices, bespoke architecture, Michelin dining.',
+                whenToAvoid: 'Budget-friendly discount stores, accessible government service portals.'
+            },
+            // 7. Skeuomorphism
+            {
+                id: 'skeuomorphism',
+                name: 'Classic Skeuomorphism (Physical Digital Craft)',
+                category: 'TACTILE_SKEUOMORPH',
+                era: '2007 — 2012',
+                summary: 'Hyper-realistic real-world textures: stitched saddle leather, brushed aluminum, glass bevels, and embossed dials.',
+                philosophy: 'Originated to bridge user comfort during the mobile smartphone revolution (iOS 1 to 6). Metaphors of physical leather notebooks, metallic sliders, and glossy gel buttons made digital interactions self-explanatory.',
+                colors: ['#4A2E18', '#C0C0C0', '#2E7D32', '#F4ECD8'],
+                typography: 'Helvetica Neue / Lucida Grande with inner drop shadows',
+                prompt: 'Classic Skeuomorphic digital audio workstation web interface reminiscent of iOS 6 and classic Mac OS X. Rich realistic textures: stitched saddle-brown leather header, brushed anodized aluminum faders, glossy glass LCD displays with realistic ambient glare, tactile rotary potentiometers, embossed drop shadows, metallic chrome buttons, physical craftsmanship and tactile nostalgia --ar 16:9 --v 6.0',
+                cssRules: `background: linear-gradient(180deg, #d8d8d8 0%, #b0b0b0 100%);\nborder: 1px solid #777;\nborder-top: 1px solid #fff;\nbox-shadow: inset 0 1px 0 #fff, 0 4px 8px rgba(0,0,0,0.4);\nborder-radius: 8px;\ntext-shadow: 0 1px 0 #fff;`,
+                whenToUse: 'Virtual music instruments, analog synthesizers, retro nostalgia products, audio mastering tools.',
+                whenToAvoid: 'Scalable cloud enterprise web applications, responsive multi-breakpoint web systems.'
+            },
+            // 8. Frutiger Aero
+            {
+                id: 'frutiger-aero',
+                name: 'Frutiger Aero (2000s Tech Optimism)',
+                category: 'RETRO_NOSTALGIA',
+                era: '2004 — 2013',
+                summary: 'Glossy wet skeuomorphism, water bubbles, clean auroras, vibrant sky blue and lime, and lens flare optimism.',
+                philosophy: 'A euphoric, nature-harmonious vision of the future that dominated Windows Vista, Windows 7, and early 2000s advertising: glossy glass spheres, running water, clear blue skies, and clean biotechnology.',
+                colors: ['#00A8E8', '#00C49F', '#FFFFFF', '#FFD166'],
+                typography: 'Segoe UI / Frutiger / Myriad Pro with glossy text sheen',
+                prompt: 'Frutiger Aero web portal homepage celebrating 2000s tech optimism. Glossy wet skeuomorphic buttons with glass refraction, bright cyan and meadow-green gradients, floating realistic water droplets, subtle tropical fish and clean auroras in the sky, Windows Vista and 7 Aero glass taskbar effects, vibrant sun lens flare, ultra-clean optimistic human-technology harmony --ar 16:9 --v 6.0',
+                cssRules: `background: linear-gradient(135deg, rgba(0,168,232,0.8) 0%, rgba(0,196,159,0.7) 100%);\nbackdrop-filter: blur(12px);\nborder: 2px solid rgba(255,255,255,0.6);\nbox-shadow: 0 15px 35px rgba(0,168,232,0.35), inset 0 2px 4px #ffffff;\nborder-radius: 28px;`,
+                whenToUse: 'Clean eco-tech platforms, nostalgic digital installations, vaporware games, early-web tribute archives.',
+                whenToAvoid: 'Dark mode developer tools, austere corporate B2B compliance.'
+            },
+            // 9. Claymorphism
+            {
+                id: 'claymorphism',
+                name: 'Claymorphism (Inflated 3D Plastic)',
+                category: 'TACTILE_SKEUOMORPH',
+                era: '2021 — Present',
+                summary: 'Inflated marshmallow/clay 3D shapes, rounded pillowy cards, dual inner shadows simulating volumetric dough.',
+                philosophy: 'Extends neumorphism into the 3D toy realm with high color saturation and friendly squircle volumes, eliminating Neumorphism’s accessibility contrast flaws.',
+                colors: ['#F3E8FF', '#EC4899', '#38BDF8', '#8B5CF6'],
+                typography: 'Plus Jakarta Sans / Nunito / Poppins, Extra Bold',
+                prompt: 'Fun and engaging fintech savings web app designed in Claymorphism style. Chunky inflated 3D pillowy cards with soft matte clay surfaces, dual inner shadows simulating rounded inflatable volume, pastel lilac, bubblegum pink, and baby-blue color scheme. Adorable 3D clay coins and wallet illustrations, ultra-rounded 32px pill buttons, friendly squircle UI components, playful Duolingo-level warmth --ar 16:9 --v 6.0',
+                cssRules: `background: #e0d4fc;\nborder-radius: 36px;\nbox-shadow: 16px 16px 32px rgba(139, 92, 246, 0.25),\n            inset -8px -8px 16px rgba(139, 92, 246, 0.35),\n            inset 8px 8px 16px #ffffff;\nborder: none;`,
+                whenToUse: 'Kids education apps, friendly gamified financial apps, onboarding tours, playful mobile games.',
+                whenToAvoid: 'Serious legal software, medical diagnostics, enterprise data warehouses.'
+            },
+            // 10. Bento Grid
+            {
+                id: 'bento-grid',
+                name: 'Bento Grid (Apple Modular Architecture)',
+                category: 'MODERN_MINIMAL',
+                era: '2022 — Present',
+                summary: 'Asymmetrical masonry grid of nested rounded cards with varied spans, micro-interactions, and visual density.',
+                philosophy: 'Inspired by Japanese bento lunchboxes and perfected by Apple marketing and Linear.app. Packages diverse information streams into coherent, modular, bite-sized spatial compartments.',
+                colors: ['#0A0B0E', '#181A20', '#6366F1', '#E2E8F0'],
+                typography: 'Geist / Inter / Space Grotesk with tight letter-spacing',
+                prompt: 'Next-gen developer platform landing page featuring Apple-style Bento Grid architecture. High-density asymmetrical grid of nested modular cards, varied spans with rounded 28px corners, dark mode graphite surface (#121316) with subtle 1px internal border highlights, interactive data widgets, embedded kinetic code snippets, glowing telemetry meters, pristine Linear-grade micro-interactions --ar 16:9 --v 6.0',
+                cssRules: `display: grid;\ngrid-template-columns: repeat(12, 1fr);\ngap: 1.5rem;\nbackground: #111317;\nborder: 1px solid rgba(255, 255, 255, 0.08);\nborder-radius: 28px;\npadding: 2rem;`,
+                whenToUse: 'Modern SaaS product pages, feature walkthroughs, developer tools, portfolio showcases, device landing pages.',
+                whenToAvoid: 'Continuous long-form reading, academic journal publishing, legal contracts.'
+            },
+            // 11. Vaporwave
+            {
+                id: 'vaporwave',
+                name: 'Vaporwave & Retro-Futurism Glitch',
+                category: 'RETRO_NOSTALGIA',
+                era: '2015 — Present',
+                summary: 'Sunset wireframe horizons, pink/cyan neon, Roman marble statues, Japanese Katakana, and VHS scanlines.',
+                philosophy: 'An ironic, surrealist critique of late-stage 1980s consumerism and early cyberspace. Combines nostalgic muzak tropes with glitch art, neon pastels, and classical antiquity.',
+                colors: ['#FF71CE', '#01CDFE', '#05FFA1', '#2B0055'],
+                typography: 'MS Gothic, VT323, Japanese Katakana display glyphs',
+                prompt: 'Vaporwave aesthetic music festival website. Retro 1980s neon aesthetic: wireframe synthwave grid running into a neon purple sun horizon, pastel hot magenta and electric cyan color palette, classical marble Roman statues, Japanese katakana display typography, subtle VHS scanline overlays and chromatic aberration, nostalgic chillwave dreamscape --ar 16:9 --v 6.0',
+                cssRules: `background: linear-gradient(180deg, #2b0055 0%, #ff71ce 100%);\nfilter: drop-shadow(0 0 15px #01cdfe);\nborder: 2px solid #05ffa1;\ntext-shadow: 3px 3px 0 #ff71ce;`,
+                whenToUse: 'Music events, creative portfolio, gaming apparel, collectible fashion, subculture zines.',
+                whenToAvoid: 'B2B enterprise portals, banking apps, corporate recruiting sites.'
+            },
+            // 12. Material Design 3
+            {
+                id: 'material-design-3',
+                name: 'Material Design 3 (Material You)',
+                category: 'MODERN_MINIMAL',
+                era: '2021 — Present',
+                summary: 'Dynamic algorithmic tonal color palettes derived from wallpaper, pill-shaped FABs, and soft tonal elevation.',
+                philosophy: 'Google’s adaptive design system that replaces harsh drop shadows with tonal elevation surfaces, and personalizes user interfaces via dynamic algorithmic color extraction.',
+                colors: ['#6750A4', '#E8DEF8', '#1D1B20', '#49454F'],
+                typography: 'Google Sans / Roboto Flex, expressive tonal weights',
+                prompt: 'Modern productivity workspace application in Material Design 3 (Material You). Adaptive tonal color system with soft terracotta and dusty sage hues, prominent pill-shaped Floating Action Button, rounded container surfaces with tonal elevation rather than heavy drop shadows, clean Google Sans typography, state layers with ripple micro-interactions, Android 14 design language --ar 16:9 --v 6.0',
+                cssRules: `background: #f7f2fa;\ncolor: #1d1b20;\nborder-radius: 28px;\nborder: none;\nbox-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15);`,
+                whenToUse: 'Android ecosystem web apps, Google Workspace extensions, utility productivity tools.',
+                whenToAvoid: 'Awwwards-seeking avant-garde portfolios, brutalist underground websites.'
+            },
+            // 13. Memphis Postmodern
+            {
+                id: 'memphis-design',
+                name: 'Memphis Postmodern Design (80s Pop)',
+                category: 'RETRO_NOSTALGIA',
+                era: '1981 — 1988 (Revival: 2020s)',
+                summary: 'Squiggly bacteria lines, confetti patterns, clash of bold primary colors, geometric 3D cones and cylinders.',
+                philosophy: 'Founded by Ettore Sottsass in Milan in 1981 to violently break away from sterile modernist Bauhaus minimalism. Celebrates humor, kitsch, asymmetry, and exuberant color clashing.',
+                colors: ['#0047FF', '#FF0055', '#FFDE00', '#00FF66'],
+                typography: 'Futura Bold / Bauhaus 93 / Syne Bold',
+                prompt: 'Creative design agency homepage inspired by 1980s Memphis Postmodern Design group. Playful clashing vibrant palette of cobalt blue, coral red, sunshine yellow, and mint green. Whimsical repeating squiggly lines, confetti patterns, floating 3D geometric primitives (cylinders, cones, zig-zag ribbons), bold black outlines, dynamic asymmetry, rebellious high-spirited energy --ar 16:9 --v 6.0',
+                cssRules: `background: #ffde00;\nborder: 4px solid #000000;\nbox-shadow: 8px 8px 0px #0047ff;\nborder-radius: 0px;\nbackground-image: radial-gradient(#ff0055 20%, transparent 20%);\nbackground-size: 16px 16px;`,
+                whenToUse: 'Creative festivals, modern art exhibitions, toy marketing, independent lifestyle brands.',
+                whenToAvoid: 'Enterprise cloud console, financial investing dashboards.'
+            },
+            // 14. Kinetic Typography
+            {
+                id: 'kinetic-typography',
+                name: 'Kinetic Typography & Editorial Brutalism',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2021 — Present',
+                summary: 'Massive responsive typography acting as architectural structural elements, infinite ticker tapes, bold glyph focus.',
+                philosophy: 'Elevates letterforms from passive semantic communication to active visual architecture. Screen-filling glyphs, marquee loops, and interactive kinetic physics drive the entire user journey.',
+                colors: ['#0A0A0A', '#F5F5F0', '#CCFF00', '#262626'],
+                typography: 'Syne / Monument Extended / PP Neue Montreal, Ultra Black',
+                prompt: 'Avant-garde fashion brand website built on Kinetic Typography and Editorial Brutalism. Colossal responsive typography where letters act as architectural structural elements, infinite smooth scrolling marquee text ribbons, extreme contrast between ultra-condensed black sans-serif and delicate italic serif, stark black and bone-white palette with an electric acid-lime flash, Awwwards Site of the Day caliber --ar 16:9 --v 6.0',
+                cssRules: `font-family: 'Syne', sans-serif;\nfont-size: clamp(3rem, 12vw, 10rem);\nline-height: 0.85;\nletter-spacing: -0.06em;\ntext-transform: uppercase;\nfont-weight: 800;`,
+                whenToUse: 'High fashion flagships, design agencies, cutting-edge art exhibitions, experimental editorial magazines.',
+                whenToAvoid: 'Information-heavy portals, medical forms, dense data spreadsheets.'
+            },
+            // 15. Organic Biophilic
+            {
+                id: 'organic-biophilic',
+                name: 'Organic & Biophilic (Solarpunk Ecology)',
+                category: 'MODERN_MINIMAL',
+                era: '2022 — Present',
+                summary: 'Fluid asymmetrical SVG blob containers, earthy sage/terracotta/moss tones, pebble buttons, natural serenity.',
+                philosophy: 'Connects digital spaces with living biological systems. Utilizes continuous curved geometries, natural earthen tones, and biomimetic rhythms to soothe screen fatigue and foster ecological awareness.',
+                colors: ['#2D4B39', '#D97706', '#F7F4EE', '#84A98C'],
+                typography: 'Fraunces / Plus Jakarta Sans / Recoleta',
+                prompt: 'Sustainable regenerative ecology platform in Organic Biophilic design. Flowing asymmetrical fluid blob containers, warm earthen palette of deep moss green (#2D4B39), terra cotta clay, and soft oatmeal linen (#F7F4EE). Natural botanical textures, smooth pebble-shaped navigation cards, gentle wavy section dividers, clean editorial typography, grounded and serene atmosphere --ar 16:9 --v 6.0',
+                cssRules: `background: #f7f4ee;\ncolor: #2d4b39;\nborder-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;\nborder: 1px solid rgba(45, 75, 57, 0.15);\npadding: 3rem;`,
+                whenToUse: 'Clean energy brands, organic food, wellness retreats, mental health apps, climate tech organizations.',
+                whenToAvoid: 'Crypto exchanges, cyber warfare analytics, high-frequency trading.'
+            },
+            // 16. Spatial VisionOS
+            {
+                id: 'spatial-visionos',
+                name: 'Spatial UI & Holographic 3D (VisionOS)',
+                category: 'SPATIAL_3D',
+                era: '2023 — Present',
+                summary: 'Z-axis multi-plane elevation, dynamic refractive glass highlights, gaze-reactive glow, and stereoscopic depth.',
+                philosophy: 'Created for spatial computing headsets (Apple Vision Pro, Meta Quest). UI elements no longer live on flat 2D screens; they float in physical 3D space with genuine parallax, cast ambient shadows, and react to gaze.',
+                colors: ['rgba(255,255,255,0.12)', '#000000', '#38BDF8', '#FFFFFF'],
+                typography: 'SF Pro Display / Space Grotesk with volumetric glow',
+                prompt: 'Spatial Computing interface designed for visionOS mixed-reality headset. Holographic floating glass panels in 3D space, real-time dynamic refractive caustics, soft volumetric ambient shadows cast into physical room space, eye-tracking hover bloom states, translucent specular glass pill navigation, luminescent UI widgets with genuine physical depth and parallax --ar 16:9 --v 6.0',
+                cssRules: `background: rgba(255, 255, 255, 0.1);\nbackdrop-filter: blur(35px) saturate(180%);\nborder: 1px solid rgba(255, 255, 255, 0.3);\nbox-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),\n            inset 0 1px 2px rgba(255, 255, 255, 0.4);\nborder-radius: 40px;\ntransform: translateZ(30px);`,
+                whenToUse: 'Spatial computing apps, 3D visualization, immersive gaming portals, metaverse experiences.',
+                whenToAvoid: 'Standard flat mobile web pages where 3D depth impairs readability.'
+            },
+            // 17. Retro 8-Bit
+            {
+                id: 'retro-8bit',
+                name: 'Retro 8-Bit & Pixel Art (Web 1.0 Nostalgia)',
+                category: 'RETRO_NOSTALGIA',
+                era: '1990s — Early 2000s',
+                summary: 'Crisp pixelated typography, CRT monitor scanline curvature, dithered shading, and chunky beveled window frames.',
+                philosophy: 'Honors the golden dawn of personal computing (MS-DOS, Windows 95, classic arcade games, and early GeoCities personal web rings), reviving pixel-level intentionality and joyful constraints.',
+                colors: ['#008080', '#C0C0C0', '#000080', '#FFFFFF'],
+                typography: 'Press Start 2P / VT323 / Silkscreen',
+                prompt: 'Nostalgic indie game studio website in authentic 16-bit Pixel Art and Web 1.0 style. Handcrafted dithered pixel graphics, CRT monitor curvature with subtle scanlines, custom pixel monospace typography, chunky Windows 95 style beveled gray dialog boxes with blue title bars, animated 8-bit pixel art mascot, retro chiptune gaming aesthetic --ar 16:9 --v 6.0',
+                cssRules: `background: #c0c0c0;\nborder: 3px outset #ffffff;\nfont-family: 'Press Start 2P', monospace;\nbox-shadow: 2px 2px 0px #000000;\nimage-rendering: pixelated;`,
+                whenToUse: 'Indie game studios, retro arcade projects, developer humor sites, web3 retro games, chip-music labels.',
+                whenToAvoid: 'Mainstream banking, medical health systems, corporate enterprise procurement.'
+            },
+            // 18. Acid Anti-Design
+            {
+                id: 'acid-anti-design',
+                name: 'Acid Graphics & Anti-Design (Cyber Y2K Underground)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2022 — Present',
+                summary: 'Liquid melted chrome 3D typography, distorted metallic reflections, harsh neon charts, and chaotic collage layers.',
+                philosophy: 'Flips conventional UI/UX dogmas upside-down. Intentionally breaks grid alignment, readability rules, and conventional color balance to channel rave culture, cyber-gothic tribal aesthetics, and digital noise.',
+                colors: ['#D4FF00', '#FF007A', '#0D0D0D', '#C0C0C0'],
+                typography: 'Distorted Liquid Chrome / Barbed Monospace / Gothic Sans',
+                prompt: 'Underground electronic record label web store in Acid Graphics Anti-Design style. Molten liquid chrome typography with high-gloss mirror reflections, barbed-wire tribal vector motifs, chaotic layered stickers, hyper-saturated neon chartreuse (#D4FF00) and pitch black, distorted warped grid containers, rave club culture and dystopian Y2K techno aesthetic --ar 16:9 --v 6.0',
+                cssRules: `background: #0d0d0d;\nborder: 2px solid #d4ff00;\nbox-shadow: 0 0 20px #d4ff00, inset 0 0 10px #ff007a;\nfilter: contrast(120%);\ntransform: skew(-2deg);`,
+                whenToUse: 'Rave events, underground streetwear brands, experimental music labels, contemporary digital art projects.',
+                whenToAvoid: 'E-commerce checkout funnels, healthcare portals, government websites.'
+            },
+            // 19. Isometric 3D
+            {
+                id: 'isometric-3d',
+                name: 'Isometric 3D Illustration / Low-Poly',
+                category: 'SPATIAL_3D',
+                era: '2016 — Present',
+                summary: '30-degree axonometric angle, clean miniature architectural dioramas, modular floating city blocks, soft lighting.',
+                philosophy: 'Provides God-like clarity over intricate systems by viewing complex technical architectures, logistics hubs, or cloud services as beautiful miniature mechanical worlds without perspective distortion.',
+                colors: ['#3A0CA3', '#4CC9F0', '#F72585', '#4361EE'],
+                typography: 'Plus Jakarta Sans / Space Grotesk / Inter',
+                prompt: 'Cloud infrastructure SaaS homepage featuring an interactive Isometric 3D city diorama. Clean 30-degree isometric projection of floating modular digital architecture with glowing server stacks, micro autonomous electric vehicles, soft matte pastel color palette with warm daylight lighting, playful stylized low-poly 3D models, crisp and engaging developer product UI --ar 16:9 --v 6.0',
+                cssRules: `transform: rotateX(60deg) rotateZ(-45deg);\ntransform-style: preserve-3d;\nbox-shadow: 20px 20px 50px rgba(0,0,0,0.3);\nborder-radius: 16px;`,
+                whenToUse: 'Cloud architectures, data pipeline visualizations, smart city platforms, tech explainer landing pages.',
+                whenToAvoid: 'Minimalist editorial essays, high-fashion portfolios.'
+            },
+            // 20. Cyberpunk Synthwave
+            {
+                id: 'cyberpunk-synthwave',
+                name: 'Dark Cyberpunk & Synthwave (Outrun Grid)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2018 — Present',
+                summary: 'Pitch-black background with vibrant neon laser wireframes, glowing magenta and electric blue, HUD telemetry.',
+                philosophy: 'A dystopian vision of high tech and low life rooted in William Gibson’s Neuromancer, Blade Runner, and the 1980s Outrun arcade aesthetic. High voltage contrast, laser horizons, and HUD targeting crosshairs.',
+                colors: ['#0A0C10', '#FF0055', '#00F0FF', '#7928CA'],
+                typography: 'Orbitron / Space Mono / JetBrains Mono, All-Caps glowing',
+                prompt: 'Futuristic cyber security operations dashboard in Dark Cyberpunk aesthetic. Deep midnight carbon background (#0A0C10) slashed by intense neon crimson and cyan laser wireframes, digital rain data cascades, HUD targeting crosshairs, glowing digital progress bars, high-contrast monospace readouts, Blade Runner and Ghost in the Shell high-tech interface --ar 16:9 --v 6.0',
+                cssRules: `background: #0a0c10;\nborder: 1px solid #00f0ff;\nbox-shadow: 0 0 15px rgba(0, 240, 255, 0.4),\n            inset 0 0 15px rgba(255, 0, 85, 0.2);\ncolor: #00f0ff;\ntext-shadow: 0 0 8px #00f0ff;`,
+                whenToUse: 'Cybersecurity defense centers, esports team sites, sci-fi games, hackathons, synthwave music.',
+                whenToAvoid: 'Corporate HR portals, wellness & mindfulness apps, organic farming brands.'
+            },
+            // 21. Raw Brutalism
+            {
+                id: 'raw-brutalism',
+                name: 'Raw / Architectural Brutalism (Pure HTML)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '1993 — Raw Web Manifesto',
+                summary: 'Default serif typography, raw unstyled hyperlinks, zero rounded corners, harsh black/white grid lines.',
+                philosophy: 'Strikes down modern corporate visual bloat in favor of the web’s primal structural truth. Content without makeup, pure HTML tags, hyper-fast performance, and ideological authenticity.',
+                colors: ['#FFFFFF', '#000000', '#0000EE', '#551A8B'],
+                typography: 'Times New Roman / Courier New, unstyled defaults',
+                prompt: 'Stark pure web brutalist manifesto landing page inspired by raw 1990s HTML. Unstyled default serif typography in Times New Roman, bright blue hyperlink text with purple visited states, zero rounded corners, zero gradients, zero shadows. Harsh black-and-white grid lines, authentic architectural concrete utilitarian aesthetic, HTML text-first brutalism --ar 16:9 --v 6.0',
+                cssRules: `background: #ffffff;\ncolor: #000000;\nfont-family: 'Times New Roman', serif;\nborder: 2px solid #000000;\nborder-radius: 0px;\nbox-shadow: none;\npadding: 2rem;`,
+                whenToUse: 'Philosophy manifestos, independent academic archives, anti-establishment artists, zero-dependency tools.',
+                whenToAvoid: 'Consumer e-commerce funnels, luxury retail, mass-market enterprise SaaS.'
+            },
+            // 22. Art Deco
+            {
+                id: 'art-deco',
+                name: 'Art Deco & Gatsby Glamour (Roaring 20s Digital)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '1920s (Digital Revival: 2024)',
+                summary: 'Geometric gold filigree, symmetrical chevron borders, fan motifs, deep emerald and obsidian velvet.',
+                philosophy: 'Translates the Machine Age glamour of the Chrysler Building and Great Gatsby ballrooms into modern digital architecture. Celebrates symmetry, opulence, and geometric ornamentation.',
+                colors: ['#0B2019', '#D4AF37', '#08080A', '#E5C158'],
+                typography: 'Cinzel / Park Lane / Playfair Display, all-caps tracked',
+                prompt: 'Ultra-luxurious cocktail lounge and private members club website in Art Deco Gatsby style. Symmetrical geometric gold fan filigree, chevron stepped border frames, deep midnight emerald green (#0B2019) and matte obsidian background. Ornate 1920s vintage serif display typography with polished metallic gold foil highlights, roaring twenties opulent majesty --ar 16:9 --v 6.0',
+                cssRules: `background: #0b2019;\nborder: 2px solid #d4af37;\nborder-image: linear-gradient(to bottom, #d4af37, #aa771c) 1;\nbox-shadow: 0 0 25px rgba(212, 175, 55, 0.25);\nfont-family: 'Cinzel', serif;\nletter-spacing: 0.15em;`,
+                whenToUse: 'Luxury spirits, private members clubs, high-end hospitality, vintage jazz festivals, bespoke jewelry.',
+                whenToAvoid: 'Agile software tracking tools, modern cloud computing platforms.'
+            },
+            // 23. Cyber Y2K
+            {
+                id: 'cyber-y2k',
+                name: 'Cyber Y2K & Millennium Futurist',
+                category: 'RETRO_NOSTALGIA',
+                era: '1999 — 2003',
+                summary: 'Translucent candy plastic, silver chrome puffers, iridescent bubble stickers, and early millennium tech optimism.',
+                philosophy: 'The turn-of-the-millennium celebration of portable digital gadgetry (iMac G3, original iPod, Game Boy Advance). Saturated with chromatic optimism and liquid silver reflection.',
+                colors: ['#00F0FF', '#FF00A0', '#E2E8F0', '#1E1B4B'],
+                typography: 'Microgramma / Eurostile / Syne Extra Bold',
+                prompt: 'Hyper-futuristic music gear web store in Cyber Y2K aesthetic from the year 2000. Translucent injection-molded candy colored polycarbonate plastic (inspired by original iMac G3 and Game Boy Color), chrome inflatable 3D typography, holographic iridescent bubble stickers, silver metallic puffer jacket textures, millennium tech optimism --ar 16:9 --v 6.0',
+                cssRules: `background: rgba(0, 240, 255, 0.25);\nbackdrop-filter: blur(15px);\nborder: 2px solid rgba(255, 255, 255, 0.7);\nborder-radius: 30px;\nbox-shadow: 0 15px 35px rgba(0, 240, 255, 0.3), inset 0 2px 4px #fff;`,
+                whenToUse: 'Gen-Z streetwear brands, DJ music platforms, retro tech hardware, collectibles, festival lineups.',
+                whenToAvoid: 'B2B enterprise HR software, mortgage lending, corporate risk assessments.'
+            },
+            // 24. Solarpunk
+            {
+                id: 'solarpunk',
+                name: 'Solarpunk (Utopian High-Tech Agrarian)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2023 — Present',
+                summary: 'Stained-glass solar panels, warm copper & brass filigree, lush vertical flora, amber sunlit terracotta.',
+                philosophy: 'Rejects dystopian cyberpunk gloom. Envisions an advanced high-tech civilization living in peaceful biological symbiosis with renewable clean energy and living vertical gardens.',
+                colors: ['#2F5D3A', '#D97706', '#FAF5EB', '#2563EB'],
+                typography: 'Fraunces / Plus Jakarta Sans / Recoleta',
+                prompt: 'Visionary renewable architecture platform in Solarpunk aesthetic. Harmonious fusion of high-technology with abundant nature: stained-glass solar panel canopy textures, warm brass and copper filigree framing lush vertical garden foliage, warm amber and sunlit terracotta tones, hopeful clean green technological utopia, biomimetic curves --ar 16:9 --v 6.0',
+                cssRules: `background: #faf5eb;\ncolor: #2f5d3a;\nborder: 2px solid #d97706;\nborder-radius: 28px;\nbox-shadow: 0 15px 30px rgba(217, 119, 6, 0.15);\nbackground-image: radial-gradient(#d97706 8%, transparent 8%);\nbackground-size: 20px 20px;`,
+                whenToUse: 'Clean tech ventures, solar startups, permaculture collectives, sustainable urban planning.',
+                whenToAvoid: 'Dark mode tactical cybersecurity, military tech.'
+            },
+            // 25. Deconstructivism
+            {
+                id: 'deconstructivism',
+                name: 'Deconstructivism & Post-Structuralist Anti-Grid',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2022 — Present',
+                summary: 'Shattered non-linear grids, angled overlapping layers, typography rotated at -7° and 12°, dynamic structural tension.',
+                philosophy: 'Inspired by Jacques Derrida, Peter Eisenman, and Zaha Hadid. Dismantles predictable rectilinear card containers to expose the chaotic, multi-layered dynamism of digital reality.',
+                colors: ['#18181B', '#F43F5E', '#F4F4F5', '#3B82F6'],
+                typography: 'Syne / Monument Extended / Space Grotesk, extreme scale',
+                prompt: 'Avant-garde architectural research lab website in Deconstructivism aesthetic. Deliberately shattered grid systems, angled intersecting typography rotated at -7 and 12 degrees, fragmented floating structural cards overlapping in dynamic tension, stark charcoal and industrial safety red accents, inspired by Zaha Hadid and Peter Eisenman architecture --ar 16:9 --v 6.0',
+                cssRules: `transform: rotate(-3deg) skew(-2deg);\ntransform-origin: top left;\nbackground: #18181b;\nborder: 1px solid #f43f5e;\nbox-shadow: 15px 15px 0px rgba(244, 63, 94, 0.3);\nmargin: 2rem 0;`,
+                whenToUse: 'Avant-garde architecture studios, contemporary art biennials, cutting-edge fashion, experimental sound.',
+                whenToAvoid: 'Standard e-commerce checkouts, hospital management systems, banking.'
+            },
+            // 26. Gothic Noir
+            {
+                id: 'gothic-noir',
+                name: 'Dark Gothic & Occult Noir (Alchemical Fantasy)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: 'Medieval / Modern Fantasy',
+                summary: 'Carved obsidian stone, ancient gold alchemical runes, blood crimson accents, and distressed parchment.',
+                philosophy: 'Channels dark romanticism, esoteric grimoires, and dark fantasy RPGs (Elden Ring, Dark Souls). Brings timeless mystery, sacred geometry, and tactile grim majesty to the screen.',
+                colors: ['#0A0A0C', '#8B0000', '#C5A059', '#2E2D38'],
+                typography: 'Cinzel Decorative / UnifrakturMaguntia / Playfair Display',
+                prompt: 'Dark fantasy RPG game website in Dark Gothic and Occult Noir aesthetic. Carved obsidian stone slabs, ancient gold alchemical runes and esoteric sacred geometry, blood crimson accents (#8B0000), distressed parchment paper overlays, ornate blackletter and Fraktur typography, atmospheric volumetric dungeon candlelight mist --ar 16:9 --v 6.0',
+                cssRules: `background: #0a0a0c;\nborder: 1px solid #8b0000;\nbox-shadow: 0 0 30px rgba(139, 0, 0, 0.4), inset 0 0 20px #000;\ncolor: #c5a059;\nfont-family: 'Cinzel', serif;`,
+                whenToUse: 'Dark fantasy game studios, heavy metal bands, gothic horror fiction, escape rooms, occult lore.',
+                whenToAvoid: 'Corporate accounting, children’s learning apps, medical clinic portals.'
+            },
+            // 27. Nordic Minimalism
+            {
+                id: 'nordic-minimalism',
+                name: 'Nordic & Scandinavian Minimalism (Hygge Clean)',
+                category: 'MODERN_MINIMAL',
+                era: '2020 — Present',
+                summary: 'Warm pale birch wood tones, muted chalky sage, oatmeal linen, massive whitespace, serene diffuse daylight.',
+                philosophy: 'Rooted in the Scandinavian philosophy of Hygge and functional warmth (Artek, Muuto). Simplicity without coldness; every element radiates calm, warmth, and quiet craftsmanship.',
+                colors: ['#F9F8F6', '#8FA391', '#D4C3B3', '#2C3531'],
+                typography: 'Plus Jakarta Sans / Inter / Söhne, light & regular weights',
+                prompt: 'Serene Copenhagen interior design studio website in Nordic Scandinavian Minimalism (Hygge). Warm pale birch wood accents, muted chalky sage green (#94A394), soft oatmeal linen background (#F9F8F6), massive breathable whitespace, humanist geometric typography in Plus Jakarta Sans, gentle natural diffuse daylight, peaceful functional calm --ar 16:9 --v 6.0',
+                cssRules: `background: #f9f8f6;\ncolor: #2c3531;\nborder-radius: 16px;\nborder: 1px solid rgba(143, 163, 145, 0.2);\nbox-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);\npadding: 3rem;`,
+                whenToUse: 'Scandinavian furniture brands, wellness retreats, organic tea studios, mindful productivity apps.',
+                whenToAvoid: 'Nightclub ticketing, high-intensity esports, cybersecurity hackathons.'
+            },
+            // 28. Windows 95 GUI
+            {
+                id: 'win95-gui',
+                name: 'Windows 95 & Classic Desktop GUI (Beveled 16-Bit)',
+                category: 'RETRO_NOSTALGIA',
+                era: '1995 — 1999',
+                summary: 'Classic #008080 teal desktop, beveled light-gray dialog windows, dark blue titlebars, and 16-bit start menu.',
+                philosophy: 'The seminal graphical user interface that brought hundreds of millions of people into computing. Masterful 3D bevels (`#fff` top-left, `#000` bottom-right) simulating physical push buttons on flat CRTs.',
+                colors: ['#008080', '#C0C0C0', '#000080', '#FFFFFF'],
+                typography: 'MS Sans Serif / Pixel Monospace / System Font',
+                prompt: 'Charming retro desktop OS website in authentic Windows 95 and System 7 GUI aesthetic. Classic #008080 teal desktop background, beveled light-gray (#C0C0C0) floating dialog windows with 3D inset borders, dark blue title bars with pixelated minimize/maximize/close icons, classic pixelated system font, start menu button in bottom taskbar, pure 1995 nostalgia --ar 16:9 --v 6.0',
+                cssRules: `background: #c0c0c0;\nborder-top: 2px solid #ffffff;\nborder-left: 2px solid #ffffff;\nborder-right: 2px solid #000000;\nborder-bottom: 2px solid #000000;\nbox-shadow: 1px 1px 0px #000;\nfont-family: 'Press Start 2P', monospace;\nfont-size: 11px;`,
+                whenToUse: 'Developer portfolios, retro software emulators, humorous novelty apps, indie games.',
+                whenToAvoid: 'High-end luxury shopping, serious healthcare portals.'
+            },
+            // 29. Frutiger Metro
+            {
+                id: 'frutiger-metro',
+                name: 'Frutiger Metro & Windows Phone Live Tiles',
+                category: 'RETRO_NOSTALGIA',
+                era: '2010 — 2015',
+                summary: 'Flat edge-to-edge modular rectangular colored tiles, colossal Segoe UI typography, panoramic horizontal canvas.',
+                philosophy: 'Designed by Microsoft as "Authentically Digital". Cast off skeuomorphic leather and bevels in favor of typography as the interface, active data tiles, and kinetic flipping animations.',
+                colors: ['#0078D7', '#E51400', '#339933', '#000000'],
+                typography: 'Segoe UI Light / Semibold, gigantic scale',
+                prompt: 'Dynamic mobile productivity web dashboard in Frutiger Metro (Windows Phone 8 Live Tiles) style. Flat edge-to-edge modular rectangular colored tiles in cobalt blue, mango orange, and emerald green. Gigantic clean typography in Segoe UI Light overflowing past screen bounds, clean horizontal panorama canvas, zero gradients, zero shadows, pure typographic motion --ar 16:9 --v 6.0',
+                cssRules: `background: #0078d7;\ncolor: #ffffff;\nborder: none;\nborder-radius: 0px;\npadding: 2rem;\nfont-family: 'Plus Jakarta Sans', sans-serif;\nfont-weight: 300;`,
+                whenToUse: 'Data metric screens, touch-screen kiosks, bold digital signage, modern news tickers.',
+                whenToAvoid: 'Subtle atmospheric luxury, rich illustrated storytelling.'
+            },
+            // 30. Glitch Datamosh
+            {
+                id: 'glitch-datamosh',
+                name: 'Glitch Art & Datamosh (Digital Malfunction)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '2019 — Present',
+                summary: 'Heavy RGB channel splits, digital compression macroblock artifacts, corrupted scanline tearing, static noise.',
+                philosophy: 'Finds aesthetic beauty in computational failure and data corruption. Subverts the perfection of digital rendering by exposing the raw packet loss, codec tearing, and static noise of the machine.',
+                colors: ['#050505', '#00FF66', '#FF0055', '#00FFFF'],
+                typography: 'Space Mono / VT323 / Distorted Display',
+                prompt: 'Underground hacker conference website in Glitch Art and Datamosh aesthetic. Heavy RGB color channel displacement splits (chromatic aberration), digital compression macroblock artifacts, corrupted interlaced scanline tearing, high-frequency static noise, radioactive lime and magenta on pitch black, computational chaos and broken digital signals --ar 16:9 --v 6.0',
+                cssRules: `background: #050505;\nborder: 1px solid #00ff66;\ntext-shadow: 2px 0 #ff0055, -2px 0 #00ffff;\nfilter: contrast(130%);\nanimation: glitch 1s infinite alternate;`,
+                whenToUse: 'Cybersecurity defense drills, glitch-hop & IDM music festivals, sci-fi horror games, net art.',
+                whenToAvoid: 'Financial investment portals, legal contracts, airline booking systems.'
+            },
+            // 31. Papercraft Origami
+            {
+                id: 'papercraft',
+                name: 'Papercraft & Origami Cutout (Layered Fiber)',
+                category: 'TACTILE_SKEUOMORPH',
+                era: '2017 — Present',
+                summary: 'Multiple tactile layers of cardstock paper with realistic soft ambient drop shadows, folded origami depth.',
+                philosophy: 'Brings the calming, tactile warmth of Japanese washi paper and layered cardboard craft into flat screens, replacing cold pixels with tangible physical depth.',
+                colors: ['#FFFDF9', '#EAD5C3', '#9BB7D4', '#7D8A78'],
+                typography: 'Playfair Display / Plus Jakarta Sans',
+                prompt: 'Creative storytelling book platform in physical Papercraft and Layered Origami style. Multiple tactile layers of textured cardstock paper with realistic soft ambient drop shadows creating genuine physical depth, delicate folded origami paper animals, warm pastel color palette of cream, terracotta, and dusty teal, handcrafted physical warmth --ar 16:9 --v 6.0',
+                cssRules: `background: #fffdf9;\nborder-radius: 20px;\nbox-shadow: 0 10px 20px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.05);\nborder: 1px solid rgba(0,0,0,0.04);\npadding: 2.5rem;`,
+                whenToUse: 'Children’s books, creative craft platforms, holiday greeting hubs, eco-friendly consumer goods.',
+                whenToAvoid: 'Heavy enterprise telemetry, high-frequency trading.'
+            },
+            // 32. Aurora Mesh Glow
+            {
+                id: 'aurora-mesh',
+                name: 'Aurora & Radiant Mesh Glow (Stripe / Linear)',
+                category: 'MODERN_MINIMAL',
+                era: '2023 — Present',
+                summary: 'Matte OLED black canvas illuminated by colossal, ultra-soft multi-color fluid gradient mesh orbs, luxury tech.',
+                philosophy: 'The hallmark of modern billion-dollar Silicon Valley SaaS (Stripe, Linear, Supabase). Minimal vantablack interfaces crowned with radiant, ethereal light bleeds that evoke cosmic wonder.',
+                colors: ['#05060A', '#6366F1', '#EC4899', '#38BDF8'],
+                typography: 'Geist / Inter / Space Grotesk',
+                prompt: 'Elite SaaS cloud analytics website featuring Aurora & Radiant Mesh Glow aesthetic. Deepest matte OLED black canvas (#05060A) illuminated by colossal, ultra-soft multi-color fluid gradient mesh orbs (electric violet, celestial indigo, and cyan). Translucent vantablack cards with razor-thin white/10 borders, luminous glowing typography, Stripe and Linear tier execution --ar 16:9 --v 6.0',
+                cssRules: `background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.25) 0%, #05060a 70%);\nborder: 1px solid rgba(255, 255, 255, 0.08);\nbox-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);\nborder-radius: 24px;`,
+                whenToUse: 'Premier SaaS landing pages, cloud infra tools, AI agent orchestrators, developer platforms.',
+                whenToAvoid: 'Traditional brick-and-mortar storefronts, ultra-conservative law offices.'
+            },
+            // 33. Monochrome High-Contrast
+            {
+                id: 'monochrome-editorial',
+                name: 'High-Contrast Monochrome (Pure B&W Magazine)',
+                category: 'MODERN_MINIMAL',
+                era: 'Timeless Editorial',
+                summary: 'Absolute zero color hue, 100% tonal contrast: pitch black and crisp gallery white, gigantic serif headlines.',
+                philosophy: 'Stripped of the emotional distraction of chromatic color, pure black and white demands uncompromising rigor in layout, negative space, and typographic tension.',
+                colors: ['#000000', '#FFFFFF', '#1A1A1A', '#E5E5E5'],
+                typography: 'Playfair Display / Bodoni / Syne, extreme weights',
+                prompt: 'High-fashion independent publication website in pure Monochrome High-Contrast (Black & White Editorial). Absolute zero color hue, 100% tonal contrast: pitch black (#000000) and crisp gallery white (#FFFFFF). Immense typographic tension between gigantic high-contrast serif headlines and razor-sharp monospace captions, magazine print discipline --ar 16:9 --v 6.0',
+                cssRules: `background: #000000;\ncolor: #ffffff;\nborder: 1px solid #ffffff;\nborder-radius: 0px;\nfont-family: 'Playfair Display', serif;\npadding: 3rem;`,
+                whenToUse: 'High fashion magazines, architectural monographs, art curation, luxury photography studios.',
+                whenToAvoid: 'Data dashboards requiring color status indicators (red/green/yellow).'
+            },
+            // 34. Game Boy Retro
+            {
+                id: 'gameboy-retro',
+                name: 'Game Boy Monochrome (4-Shade Green Dot-Matrix)',
+                category: 'RETRO_NOSTALGIA',
+                era: '1989 — 1998',
+                summary: 'Strictly limited 4-shade olive green palette, chunky pixel sprites, dot-matrix LCD grid texture, chiptune joy.',
+                philosophy: 'Celebrates Gunpei Yokoi’s philosophy of "Lateral Thinking with Withered Technology". Creating unforgettable emotional depth within the rigid constraints of a 4-shade greenish reflective LCD.',
+                colors: ['#0F380F', '#306230', '#8BAC0F', '#9BBC0F'],
+                typography: 'Press Start 2P / 8-Bit Pixel Font',
+                prompt: 'Nostalgic 8-bit handheld video game website in authentic Nintendo Game Boy 4-shade green LCD aesthetic. Monochromatic palette strictly limited to 4 olive green tones (#0f380f, #306230, #8bac0f, #9bbc0f). Chunky pixel art sprites, dot-matrix LCD grid texture, pixel monospace font, 1989 handheld gaming joy --ar 16:9 --v 6.0',
+                cssRules: `background: #8bac0f;\ncolor: #0f380f;\nborder: 4px solid #0f380f;\nfont-family: 'Press Start 2P', monospace;\nbox-shadow: 4px 4px 0px #306230;\nimage-rendering: pixelated;`,
+                whenToUse: 'Handheld game development, retro gaming conventions, nostalgic music zines, indie arcade.',
+                whenToAvoid: 'Mainstream corporate web applications, financial dashboards.'
+            },
+            // 35. Terminal CLI TUI
+            {
+                id: 'terminal-tui',
+                name: 'Terminal CLI & TUI (ASCII ncurses Console)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '1970s — Modern DevOps',
+                summary: 'Phosphor green or amber glow on black, ASCII box-drawing borders, flashing block cursor, monospace mastery.',
+                philosophy: 'The language of system kernels, hackers, and terminal power-users. Strips away the mouse entirely to prioritize lightning-fast keyboard shortcuts, ncurses grids, and raw computational honesty.',
+                colors: ['#000000', '#00FF66', '#FFB000', '#1A1A1A'],
+                typography: 'VT323 / JetBrains Mono / IBM 3270',
+                prompt: 'Developer infrastructure cloud monitor in Terminal CLI / TUI (Text User Interface / ncurses) style. Monochromatic matrix green or amber phosphor glow on pure black. ASCII box-drawing borders (┌─┐│└─┘), flashing block cursor, pure monospace typography in JetBrains Mono, keyboard shortcut legends at bottom, retro UNIX command line mastery --ar 16:9 --v 6.0',
+                cssRules: `background: #000000;\ncolor: #00ff66;\nborder: 1px solid #00ff66;\nfont-family: 'JetBrains Mono', monospace;\nbox-shadow: 0 0 15px rgba(0, 255, 102, 0.2);\ntext-shadow: 0 0 5px #00ff66;`,
+                whenToUse: 'Cloud terminal sessions, DevOps monitoring, command-line tool docs, hacker conventions.',
+                whenToAvoid: 'Lifestyle fashion e-commerce, recipe blogs, children’s apps.'
+            },
+            // 36. Pop Art Halftone
+            {
+                id: 'pop-art-halftone',
+                name: 'Pop Art & Comic Book (Halftone Ben-Day Dots)',
+                category: 'CYBER_EXPERIMENTAL',
+                era: '1960s (Digital Pop)',
+                summary: 'Ben-Day halftone screen dot patterns, thick black ink outlines, saturated Roy Lichtenstein primary primaries, speech bubbles.',
+                philosophy: 'Brought into modern culture by Andy Warhol and Roy Lichtenstein. Explodes mass-media printing artifacts into giant graphic celebrations of vibrant humor, irony, and electric punch.',
+                colors: ['#FFF000', '#ED1C24', '#00AEEF', '#000000'],
+                typography: 'Bangers / Komika / Syne Extra Bold',
+                prompt: 'High-energy creative agency website in 1960s Pop Art and Comic Book style. Classic Ben-Day halftone screen dot patterns, thick black ink outlines, primary saturated Roy Lichtenstein palette of cyan, magenta, and lemon yellow, dynamic speech bubble action callouts, retro printed comic book texture --ar 16:9 --v 6.0',
+                cssRules: `background: #fff000;\nborder: 4px solid #000000;\nbox-shadow: 8px 8px 0px #000000;\nbackground-image: radial-gradient(#ed1c24 25%, transparent 25%);\nbackground-size: 12px 12px;\ncolor: #000000;\nfont-weight: 800;`,
+                whenToUse: 'Creative advertising agencies, animation studios, snack food brands, pop culture conventions.',
+                whenToAvoid: 'Private equity firms, medical compliance, legal documentation.'
+            },
+            // 37. Biomorphic Liquid
+            {
+                id: 'biomorphic-liquid',
+                name: 'Biomorphic & Liquid Morphism (Gooey Metaballs)',
+                category: 'SPATIAL_3D',
+                era: '2023 — Present',
+                summary: 'Organic fluid metaballs merging and separating, gooey SVG filter effects, jelly spring physics, iridescent glass.',
+                philosophy: 'Breaks away from rigid rectangular boundaries by treating the user interface as a living, breathing biological fluid that responds dynamically to touch, pointer movement, and physics.',
+                colors: ['#EDE9FE', '#C084FC', '#818CF8', '#F472B6'],
+                typography: 'Plus Jakarta Sans / Poppins / Nunito',
+                prompt: 'Experimental creative studio website in Biomorphic Liquid Morphism style. Organic fluid metaballs smoothly merging and separating in real-time, gooey liquid SVG filter effects, jelly-like spring physics on hover, high-gloss fluid glass bubbles, soothing iridescent lavender and mint gradients, tactile squishy digital life --ar 16:9 --v 6.0',
+                cssRules: `background: linear-gradient(135deg, #ede9fe 0%, #c084fc 100%);\nborder-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;\nbox-shadow: 0 20px 40px rgba(192, 132, 252, 0.35);\nborder: 2px solid rgba(255, 255, 255, 0.6);\ntransition: border-radius 0.6s ease;`,
+                whenToUse: 'Experimental digital art agencies, sound synthesizers, modern cosmetics, soothing meditation apps.',
+                whenToAvoid: 'Dense financial spreadsheets, legal contracts, enterprise inventory grids.'
+            },
+            // 38. Steampunk Victorian
+            {
+                id: 'steampunk-victorian',
+                name: 'Steampunk & Victorian Industrial (Brass & Rivets)',
+                category: 'TACTILE_SKEUOMORPH',
+                era: 'Victorian / Alternate History',
+                summary: 'Polished antique brass gears, exposed copper steam pipes, analogue pressure gauges with needles, mahogany wood panels.',
+                philosophy: 'An alternate history where the digital age arrived during the 19th-century Industrial Revolution. Celebrates tactile brass craftsmanship, steam power, exposed clockwork, and Jules Verne romance.',
+                colors: ['#2A1810', '#B58840', '#8B4513', '#C87D55'],
+                typography: 'Playfair Display / Rye / Victorian Display',
+                prompt: 'Bespoke artisanal watchmaker website in Steampunk and Victorian Industrial style. Polished antique brass gears, exposed copper steam pipes, analogue pressure gauges with brass bezels, deep mahogany wood panels with brass rivets, ornate Victorian serif typography, 19th-century mechanical grandeur --ar 16:9 --v 6.0',
+                cssRules: `background: #2a1810;\nborder: 3px solid #b58840;\nbox-shadow: inset 0 0 20px #000, 0 10px 25px rgba(0,0,0,0.8);\ncolor: #b58840;\nborder-radius: 8px;`,
+                whenToUse: 'Bespoke mechanical watches, artisanal distilleries, escape room venues, alternate history fiction.',
+                whenToAvoid: 'Modern minimalist SaaS, cloud computing dashboards.'
+            },
+            // 39. Space Age Retro
+            {
+                id: 'space-age-retro',
+                name: '1950s Space Age & Raygun Gothic (Googie Atomic)',
+                category: 'RETRO_NOSTALGIA',
+                era: '1950s — 1965',
+                summary: 'Googie roadside architecture boomerang curves, flying saucer chrome fins, neon pastel turquoise, atomic starbursts.',
+                philosophy: 'The mid-century American Space Age optimism of the Sputnik era. Boomerang tables, roadside motel neon, tailfins, and the belief that atomic energy and rocket ships would bring paradise.',
+                colors: ['#40E0D0', '#FF6F59', '#F7B05B', '#1A3636'],
+                typography: 'Righteous / Futura Bold / Lobster',
+                prompt: 'Retro-futuristic diner and space transport booking website in 1950s Space Age / Raygun Gothic style. Googie roadside architecture boomerang shapes, flying saucer chrome fins, glowing neon pastel turquoise and atomic coral pink, starburst sputnik motifs, retro futuristic optimism, The Jetsons meets Palm Springs mid-century modern --ar 16:9 --v 6.0',
+                cssRules: `background: #40e0d0;\ncolor: #1a3636;\nborder: 3px solid #ff6f59;\nborder-radius: 50px 10px 50px 10px;\nbox-shadow: 6px 6px 0px #ff6f59;\npadding: 2.5rem;`,
+                whenToUse: 'Retro diners, mid-century modern furniture, vintage travel agencies, bowling alleys, indie games.',
+                whenToAvoid: 'Serious legal portals, enterprise ERP software.'
+            },
+            // 40. Architectural Blueprint
+            {
+                id: 'blueprint-cad',
+                name: 'Architectural Blueprint & Technical CAD',
+                category: 'TACTILE_SKEUOMORPH',
+                era: 'Modern Technical Architecture',
+                summary: 'Prussian cyanotype blue canvas, crisp white technical grid lines, dimension callout arrows with measurements, CAD markers.',
+                philosophy: 'Draws from architectural construction documents and mechanical drafting tables. Every element carries precision coordinate markers, millimeter dimensions, and drafting authority.',
+                colors: ['#002B49', '#FFFFFF', '#4BA3E3', '#001A2E'],
+                typography: 'JetBrains Mono / Space Mono / Drafting Monospace',
+                prompt: 'Civil engineering and aerospace consulting website in Architectural Blueprint CAD style. Authentic cyanotype Prussian blue background (#002B49) with crisp white technical grid lines, architectural drafting hand-lettering, dimension arrows with millimeter measurements, crosshair coordinate markers, AutoCAD drafting aesthetic --ar 16:9 --v 6.0',
+                cssRules: `background: #002b49;\ncolor: #ffffff;\nborder: 1px solid rgba(255, 255, 255, 0.4);\nbackground-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),\n                  linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);\nbackground-size: 20px 20px;\nfont-family: 'JetBrains Mono', monospace;`,
+                whenToUse: 'Structural engineering firms, architectural studios, aerospace consultancies, industrial CAD tooling.',
+                whenToAvoid: 'Children’s fashion, dessert bakeries, lifestyle blogging.'
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           4. RENDER STYLES GALLERY & TAXONOMY
+           ------------------------------------------------------------- */
+        function renderStylesGrid(stylesToRender) {
+            const grid = document.getElementById('styles-grid');
+            grid.innerHTML = '';
+
+            stylesToRender.forEach(style => {
+                const card = document.createElement('div');
+                card.className = 'double-bezel tilt-card group';
+                card.innerHTML = `
+                    <div class="double-bezel-inner p-6 sm:p-8 flex flex-col justify-between h-full bg-[#090c1f]/90">
+                        <!-- Top Metadata -->
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider uppercase bg-white/5 border border-white/10 text-indigo-300">
+                                    ${style.era}
+                                </span>
+                                <span class="text-xs font-mono text-slate-500 uppercase">${style.category.replace('_', ' ')}</span>
+                            </div>
+
+                            <h3 class="text-2xl font-bold font-display text-white group-hover:text-indigo-300 transition-colors">
+                                ${style.name}
+                            </h3>
+                            <p class="text-sm text-slate-400 mt-2.5 line-clamp-2 leading-relaxed">
+                                ${style.summary}
+                            </p>
+
+                            <!-- Color Palette Swatches -->
+                            <div class="flex items-center gap-2 mt-5">
+                                ${style.colors.map(c => `
+                                    <div onclick="copyText('${c}', 'Color ${c}')" title="Click to copy hex: ${c}" 
+                                         class="w-7 h-7 rounded-lg cursor-pointer hover:scale-110 transition-transform border border-white/20 shadow-sm"
+                                         style="background: ${c};">
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <!-- Live Mini Preview Snippet Container -->
+                            <div class="my-6 p-4 rounded-xl border border-white/5 bg-black/40 overflow-hidden relative" style="${style.cssRules}">
+                                <div class="text-xs font-semibold mb-1 truncate">${style.name} Specimen</div>
+                                <div class="text-[11px] opacity-75 truncate">${style.typography}</div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-black/20 font-mono">LIVE PREVIEW</span>
+                                    <span class="text-xs">Active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Action Buttons -->
+                        <div class="space-y-2.5 pt-4 border-t border-white/10">
+                            <!-- Copy Master AI Prompt -->
+                            <button onclick="copyStylePrompt('${style.id}')" 
+                                    class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-indigo-600/25">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                <span>Copy Master AI Prompt</span>
+                            </button>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <!-- Morph 4D Specimen -->
+                                <button onclick="morphChameleonTo('${style.id}')" 
+                                        class="py-2 px-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 font-mono text-[11px] border border-white/10 transition-colors truncate">
+                                    ⚡ Morph 4D
+                                </button>
+                                <!-- Copy CSS -->
+                                <button onclick="copyStyleCSS('${style.id}')" 
+                                        class="py-2 px-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 font-mono text-[11px] border border-white/10 transition-colors truncate">
+                                    CSS Tokens
+                                </button>
+                                <!-- Deep Dive Modal -->
+                                <button onclick="openModal('${style.id}')" 
+                                        class="py-2 px-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 font-mono text-[11px] border border-white/10 transition-colors truncate">
+                                    Thesis →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        /* -------------------------------------------------------------
+           5. 4D CHAMELEON REAL-TIME MORPHING LOGIC (40 STYLES)
+           ------------------------------------------------------------- */
+        function initChameleonPills() {
+            const container = document.getElementById('chameleon-pill-container');
+            const selectStyle = document.getElementById('synth-style');
+
+            container.innerHTML = '';
+            selectStyle.innerHTML = '';
+
+            WEB_STYLES.forEach((s, idx) => {
+                // Chameleon Pill
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1 rounded-full text-xs font-mono border transition-all ${idx === 1 ? 'bg-indigo-600 text-white border-indigo-500' : 'bg-white/5 text-slate-300 border-white/10 hover:border-white/20'}`;
+                btn.innerText = s.name.split(' (')[0];
+                btn.onclick = () => {
+                    document.querySelectorAll('#chameleon-pill-container button').forEach(b => {
+                        b.className = 'px-3 py-1 rounded-full text-xs font-mono border transition-all bg-white/5 text-slate-300 border-white/10 hover:border-white/20';
+                    });
+                    btn.className = 'px-3 py-1 rounded-full text-xs font-mono border transition-all bg-indigo-600 text-white border-indigo-500';
+                    morphChameleonTo(s.id);
+                };
+                container.appendChild(btn);
+
+                // Option for Prompt Synthesizer
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.innerText = `${idx + 1}. ${s.name}`;
+                selectStyle.appendChild(opt);
+            });
+        }
+
+        function morphChameleonTo(styleId) {
+            const style = WEB_STYLES.find(s => s.id === styleId);
+            if (!style) return;
+
+            playTone(480, 0.15, 'sawtooth');
+
+            const specimen = document.getElementById('chameleon-specimen');
+            const styleTag = document.getElementById('specimen-style-tag');
+            const title = document.getElementById('specimen-title');
+            const card1 = document.getElementById('specimen-card-1');
+            const card2 = document.getElementById('specimen-card-2');
+            const card3 = document.getElementById('specimen-card-3');
+            const btnPri = document.getElementById('specimen-btn-pri');
+            const btnSec = document.getElementById('specimen-btn-sec');
+            const toggle = document.getElementById('specimen-toggle');
+
+            styleTag.innerText = `STYLE DNA: ${style.name.toUpperCase()}`;
+            title.innerText = `${style.name.split(' (')[0]} Specimen Core`;
+
+            // Reset base styles
+            specimen.style = '';
+            card1.style = '';
+            card2.style = '';
+            card3.style = '';
+            btnPri.style = '';
+            btnSec.style = '';
+            toggle.style = '';
+
+            // Apply specialized styling by style archetype
+            switch(style.id) {
+                case 'neumorphism':
+                    specimen.style = `background: #e0e5ec; color: #2d3748; border-radius: 28px; box-shadow: 20px 20px 40px #b8b9be, -20px -20px 40px #ffffff; border: none;`;
+                    const neuCard = `background: #e0e5ec; color: #2d3748; border-radius: 20px; box-shadow: inset 6px 6px 12px #b8b9be, inset -6px -6px 12px #ffffff; border: none;`;
+                    card1.style = neuCard; card2.style = neuCard; card3.style = neuCard;
+                    btnPri.style = `background: #e0e5ec; color: #2d3748; box-shadow: 6px 6px 14px #b8b9be, -6px -6px 14px #ffffff; border-radius: 9999px; font-weight: 700;`;
+                    btnSec.style = `background: #e0e5ec; color: #718096; box-shadow: inset 3px 3px 6px #b8b9be, inset -3px -3px 6px #ffffff; border-radius: 9999px;`;
+                    toggle.style = `background: #e0e5ec; box-shadow: inset 3px 3px 6px #b8b9be, inset -3px -3px 6px #ffffff;`;
+                    break;
+
+                case 'neo-brutalism':
+                    specimen.style = `background: #FFE600; color: #000; border: 4px solid #000; border-radius: 16px; box-shadow: 12px 12px 0px #000; font-family: 'Space Grotesk', sans-serif;`;
+                    const brutCard = `background: #ffffff; color: #000; border: 3px solid #000; border-radius: 12px; box-shadow: 6px 6px 0px #000; font-weight: 700;`;
+                    card1.style = brutCard; card2.style = brutCard; card3.style = brutCard;
+                    btnPri.style = `background: #FF6B6B; color: #000; border: 3px solid #000; box-shadow: 4px 4px 0px #000; border-radius: 8px; font-weight: 800;`;
+                    btnSec.style = `background: #A78BFA; color: #000; border: 3px solid #000; box-shadow: 4px 4px 0px #000; border-radius: 8px; font-weight: 800;`;
+                    toggle.style = `background: #000; border: 2px solid #000;`;
+                    break;
+
+                case 'industrial-brutalism':
+                    specimen.style = `background: #0E1116; color: #C9D1D9; border: 1px solid #FF5500; border-radius: 4px; box-shadow: 0 0 30px rgba(255,85,0,0.15); font-family: 'JetBrains Mono', monospace;`;
+                    const indCard = `background: #161B22; border: 1px dashed rgba(255,85,0,0.4); border-radius: 2px; color: #FF5500;`;
+                    card1.style = indCard; card2.style = indCard; card3.style = indCard;
+                    btnPri.style = `background: #FF5500; color: #000; border: 1px solid #FF5500; border-radius: 2px; font-weight: 700; text-transform: uppercase;`;
+                    btnSec.style = `background: transparent; color: #FF5500; border: 1px solid #FF5500; border-radius: 2px; text-transform: uppercase;`;
+                    toggle.style = `background: #FF5500; border-radius: 0;`;
+                    break;
+
+                case 'swiss-minimalism':
+                    specimen.style = `background: #ffffff; color: #000000; border-radius: 0px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.1); font-family: 'Plus Jakarta Sans', sans-serif;`;
+                    const swissCard = `background: #f4f4f5; color: #000000; border-radius: 0px; border: none;`;
+                    card1.style = swissCard; card2.style = swissCard; card3.style = swissCard;
+                    btnPri.style = `background: #E63946; color: #ffffff; border-radius: 0px; font-weight: 700; text-transform: uppercase;`;
+                    btnSec.style = `background: #000000; color: #ffffff; border-radius: 0px; text-transform: uppercase;`;
+                    toggle.style = `background: #000000; border-radius: 0px;`;
+                    break;
+
+                case 'dark-luxury':
+                    specimen.style = `background: #07080a; color: #f5f5f7; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.95), inset 0 1px 1px rgba(212,175,55,0.3); font-family: 'Playfair Display', serif;`;
+                    const luxCard = `background: #111318; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; color: #D4AF37;`;
+                    card1.style = luxCard; card2.style = luxCard; card3.style = luxCard;
+                    btnPri.style = `background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); color: #000; border-radius: 9999px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif;`;
+                    btnSec.style = `background: transparent; color: #D4AF37; border: 1px solid #D4AF37; border-radius: 9999px; font-family: 'Plus Jakarta Sans', sans-serif;`;
+                    toggle.style = `background: #D4AF37;`;
+                    break;
+
+                case 'raw-brutalism':
+                    specimen.style = `background: #ffffff; color: #000000; border: 2px solid #000000; border-radius: 0px; box-shadow: none; font-family: 'Times New Roman', serif;`;
+                    const rawCard = `background: #ffffff; border: 1px solid #000000; border-radius: 0px; color: #0000ee;`;
+                    card1.style = rawCard; card2.style = rawCard; card3.style = rawCard;
+                    btnPri.style = `background: #0000ee; color: #ffffff; border-radius: 0px; font-weight: bold;`;
+                    btnSec.style = `background: #ffffff; color: #551a8b; border: 1px solid #000; border-radius: 0px;`;
+                    toggle.style = `background: #0000ee; border-radius: 0;`;
+                    break;
+
+                case 'art-deco':
+                    specimen.style = `background: #0B2019; color: #D4AF37; border: 2px solid #D4AF37; border-radius: 0px; box-shadow: 0 0 30px rgba(212,175,55,0.3); font-family: 'Cinzel', serif;`;
+                    const artCard = `background: #081611; border: 1px solid #D4AF37; border-radius: 0px; color: #E5C158;`;
+                    card1.style = artCard; card2.style = artCard; card3.style = artCard;
+                    btnPri.style = `background: #D4AF37; color: #0B2019; font-weight: 800; border-radius: 0px; text-transform: uppercase; letter-spacing: 0.1em;`;
+                    btnSec.style = `background: transparent; color: #D4AF37; border: 1px solid #D4AF37; border-radius: 0px; text-transform: uppercase;`;
+                    toggle.style = `background: #D4AF37; border-radius: 0;`;
+                    break;
+
+                case 'blueprint-cad':
+                    specimen.style = `background: #002B49; color: #ffffff; border: 1px solid rgba(255,255,255,0.5); border-radius: 0px; box-shadow: 0 0 30px rgba(0,43,73,0.8); font-family: 'JetBrains Mono', monospace; background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 16px 16px;`;
+                    const cadCard = `background: rgba(0,26,46,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 0px;`;
+                    card1.style = cadCard; card2.style = cadCard; card3.style = cadCard;
+                    btnPri.style = `background: #ffffff; color: #002B49; border-radius: 0px; font-weight: bold;`;
+                    btnSec.style = `background: transparent; color: #ffffff; border: 1px solid #ffffff; border-radius: 0px;`;
+                    toggle.style = `background: #ffffff; border-radius: 0;`;
+                    break;
+
+                case 'win95-gui':
+                    specimen.style = `background: #C0C0C0; color: #000000; border: 4px outset #FFFFFF; border-radius: 0px; box-shadow: 4px 4px 0px #000000; font-family: 'Press Start 2P', monospace;`;
+                    const w95Card = `background: #000080; color: #FFFFFF; border: 2px inset #FFFFFF; border-radius: 0px;`;
+                    card1.style = w95Card; card2.style = w95Card; card3.style = w95Card;
+                    btnPri.style = `background: #C0C0C0; color: #000000; border: 3px outset #FFFFFF; border-radius: 0px; font-family: 'Press Start 2P', monospace; font-size: 10px;`;
+                    btnSec.style = `background: #C0C0C0; color: #000000; border: 3px outset #FFFFFF; border-radius: 0px; font-family: 'Press Start 2P', monospace; font-size: 10px;`;
+                    toggle.style = `background: #008080; border: 2px solid #000; border-radius: 0;`;
+                    break;
+
+                case 'terminal-tui':
+                    specimen.style = `background: #000000; color: #00FF66; border: 1px solid #00FF66; border-radius: 0px; box-shadow: 0 0 20px rgba(0,255,102,0.3); font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 5px #00ff66;`;
+                    const tuiCard = `background: #0a0a0a; border: 1px dashed #00FF66; border-radius: 0px; color: #00FF66;`;
+                    card1.style = tuiCard; card2.style = tuiCard; card3.style = tuiCard;
+                    btnPri.style = `background: #00FF66; color: #000000; border-radius: 0px; font-weight: bold;`;
+                    btnSec.style = `background: transparent; color: #00FF66; border: 1px solid #00FF66; border-radius: 0px;`;
+                    toggle.style = `background: #00FF66; border-radius: 0;`;
+                    break;
+
+                default: // Default Glassmorphism / Spatial
+                    specimen.style = `background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);`;
+                    const defCard = `background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;`;
+                    card1.style = defCard; card2.style = defCard; card3.style = defCard;
+                    btnPri.style = `background: linear-gradient(135deg, #6366f1 0%, #38bdf8 100%); color: #fff; border-radius: 9999px; box-shadow: 0 10px 20px rgba(99,102,241,0.3);`;
+                    btnSec.style = `background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 9999px;`;
+                    toggle.style = `background: #6366f1;`;
+                    break;
+            }
+
+            if (window.scrollY > 1500) {
+                document.getElementById('chameleon').scrollIntoView({ behavior: 'smooth' });
+            }
+            showToast(`4D Specimen Morphed into: ${style.name}`);
+        }
+
+        function pulseSpecimen() {
+            const specimen = document.getElementById('chameleon-specimen');
+            specimen.style.transform = 'scale(0.98)';
+            setTimeout(() => { specimen.style.transform = 'scale(1)'; }, 150);
+            showToast('Specimen Deployed Successfully');
+        }
+
+        function tweakSpecimenRadius(val) {
+            document.getElementById('val-radius').innerText = `${val}px`;
+            document.getElementById('chameleon-specimen').style.borderRadius = `${val}px`;
+        }
+
+        function tweakSpecimenElevation(val) {
+            const shadows = {
+                '1': '0 10px 20px rgba(0,0,0,0.2)',
+                '2': '0 25px 50px rgba(0,0,0,0.5)',
+                '3': '0 35px 70px rgba(0,0,0,0.8), 0 0 30px rgba(99,102,241,0.2)',
+                '4': '0 50px 100px rgba(0,0,0,0.95), 0 0 60px rgba(99,102,241,0.4)'
+            };
+            const labels = { '1': 'Subtle', '2': 'Normal', '3': 'High Depth', '4': 'Hyper Beam' };
+            document.getElementById('val-shadow').innerText = labels[val];
+            document.getElementById('chameleon-specimen').style.boxShadow = shadows[val];
+        }
+
+        function resetSpecimenFineTuning() {
+            morphChameleonTo('glassmorphism');
+            document.getElementById('val-radius').innerText = '24px';
+            document.getElementById('val-shadow').innerText = 'Normal';
+        }
+
+        /* -------------------------------------------------------------
+           6. PROMPT SYNTHESIZER COMPILATION ENGINE
+           ------------------------------------------------------------- */
+        function compilePrompt() {
+            const styleId = document.getElementById('synth-style').value;
+            const appType = document.getElementById('synth-type').value;
+            const colorMood = document.getElementById('synth-color').value;
+            const targetGen = document.getElementById('synth-target').value;
+
+            const style = WEB_STYLES.find(s => s.id === styleId) || WEB_STYLES[1];
+            let compiled = '';
+
+            if (targetGen.includes('Code')) {
+                compiled = `Create a production-ready, highly responsive web application interface for a ${appType} strictly in the ${style.name} design style. 
+Chromatics: ${colorMood}.
+Typography Archetype: ${style.typography}.
+Design Tokens & Surfaces:
+- ${style.cssRules.replace(/\n/g, ' ')}
+Key Architectural Directives:
+- Follow double-bezel nested container architecture.
+- Ensure strict semantic contrast and high visual hierarchy.
+- Include interactive hover micro-states, smooth custom cubic-bezier transitions, and modular layout components.
+- Do not use generic 1px gray borders or default Bootstrap shadows. Build a luxury $150k agency caliber digital experience.`;
+            } else if (targetGen.includes('Midjourney')) {
+                compiled = `Awwwards-winning web design of a ${appType} in authentic ${style.name} aesthetic. ${style.philosophy} Color palette: ${colorMood}. Precise typography in ${style.typography}, nested modular components, stunning UI UX layout, clean visual density, hyper-detailed digital art, Behance trending --ar 16:9 --v 6.0 --q 2`;
+            } else {
+                compiled = `Full-page high-resolution web user interface design for a ${appType}. Aesthetic movement: ${style.name}. Visual rules: ${style.summary}. Color scheme: ${colorMood}. Typography: ${style.typography}. Modern web UI design with realistic lighting, volumetric spatial depth, clean navigation bar, nested cards, and zero digital artifacts, 8k UI render.`;
+            }
+
+            document.getElementById('synth-output-text').innerText = compiled;
+        }
+
+        function copySynthesizedPrompt() {
+            const text = document.getElementById('synth-output-text').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                playTone(660, 0.1, 'sine');
+                showToast('Synthesized Prompt Copied to Clipboard!');
+            });
+        }
+
+        /* -------------------------------------------------------------
+           7. TEMPORAL CONTINUUM (TIME SCRUBBER)
+           ------------------------------------------------------------- */
+        function handleTimeScrub(year) {
+            const yr = parseInt(year);
+            const label = document.getElementById('epoch-label');
+            const desc = document.getElementById('epoch-description');
+
+            if (yr < 1999) {
+                label.innerText = `${yr} — Web 1.0 & Raw HTML`;
+                desc.innerText = 'Early web era: Pure table layouts, default serif typography, pixel fonts, Win95 gray dialogs, and raw hyperlink text.';
+            } else if (yr < 2004) {
+                label.innerText = `${yr} — Cyber Y2K & Millennium Optimism`;
+                desc.innerText = 'Millennium era: Translucent iMac G3 polycarbonate, chrome 3D typography, holographic bubble stickers, and futuristic optimism.';
+            } else if (yr < 2012) {
+                label.innerText = `${yr} — Skeuomorphism & Frutiger Aero`;
+                desc.innerText = 'Tactile craft era: Stitched leather, Aqua gloss buttons, brushed aluminum, glass reflections, and water drop optimism.';
+            } else if (yr < 2018) {
+                label.innerText = `${yr} — Flat Design & Metro Tiles`;
+                desc.innerText = 'Radical de-embellishment: Elimination of gradients in favor of sharp colored tiles, massive Segoe typography, and Material 1.0.';
+            } else if (yr < 2022) {
+                label.innerText = `${yr} — Neumorphism & Soft Surfaces`;
+                desc.innerText = 'Return of depth: Dual extruded soft box-shadows, claymorphic 3D volumes, and early frosted backdrop-filters.';
+            } else if (yr < 2028) {
+                label.innerText = `${yr} — Bento Grid & Spatial Modernism`;
+                desc.innerText = 'Apple-grade modular cards, dark obsidian luxury, radiant aurora mesh gradients, and kinetic spring physics.';
+            } else {
+                label.innerText = `${yr}+ — Holographic 4D & VisionOS`;
+                desc.innerText = 'Spatial computing paradigm: Refractive volumetric 3D panels, eye-gaze tracking, physical depth maps, and quantum UI.';
+            }
+
+            playTone(180 + (yr - 1993) * 15, 0.04, 'triangle');
+        }
+
+        function setTimeScrubber(year) {
+            document.getElementById('time-scrubber').value = year;
+            handleTimeScrub(year);
+        }
+
+        /* -------------------------------------------------------------
+           8. SEARCH, FILTER & DETAIL MODALS
+           ------------------------------------------------------------- */
+        let activeCategory = 'ALL';
+
+        function setCategoryFilter(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('#category-tabs button').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'category-btn active px-4 py-2 rounded-full text-xs font-mono border transition-all bg-indigo-600 text-white border-indigo-500';
+                } else {
+                    btn.className = 'category-btn px-4 py-2 rounded-full text-xs font-mono border transition-all bg-white/5 text-slate-300 border-white/10 hover:border-white/20';
+                }
+            });
+            playTone(400, 0.06);
+            filterStyles();
+        }
+
+        function filterStyles() {
+            const query = document.getElementById('style-search-input').value.toLowerCase();
+            const filtered = WEB_STYLES.filter(s => {
+                const matchesCat = (activeCategory === 'ALL' || s.category === activeCategory);
+                const matchesSearch = s.name.toLowerCase().includes(query) || 
+                                      s.summary.toLowerCase().includes(query) ||
+                                      s.philosophy.toLowerCase().includes(query) ||
+                                      s.era.toLowerCase().includes(query);
+                return matchesCat && matchesSearch;
+            });
+            renderStylesGrid(filtered);
+        }
+
+        function copyStylePrompt(id) {
+            const style = WEB_STYLES.find(s => s.id === id);
+            if (!style) return;
+            navigator.clipboard.writeText(style.prompt).then(() => {
+                playTone(600, 0.08, 'sine');
+                showToast(`Master Prompt for "${style.name}" copied!`);
+            });
+        }
+
+        function copyStyleCSS(id) {
+            const style = WEB_STYLES.find(s => s.id === id);
+            if (!style) return;
+            navigator.clipboard.writeText(style.cssRules).then(() => {
+                playTone(500, 0.08, 'triangle');
+                showToast(`CSS Rules for "${style.name}" copied!`);
+            });
+        }
+
+        function copyText(str, label = 'Text') {
+            navigator.clipboard.writeText(str).then(() => {
+                playTone(700, 0.05, 'sine');
+                showToast(`${label} copied to clipboard!`);
+            });
+        }
+
+        function openModal(id) {
+            const style = WEB_STYLES.find(s => s.id === id);
+            if (!style) return;
+
+            playTone(450, 0.12, 'sine');
+
+            const content = document.getElementById('modal-content');
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex items-center gap-2">
+                        <span class="px-3 py-1 rounded-full text-xs font-mono uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                            ${style.era}
+                        </span>
+                        <span class="text-xs font-mono text-slate-400 uppercase">${style.category.replace('_', ' ')}</span>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white">
+                        ${style.name}
+                    </h2>
+
+                    <!-- Thesis & Philosophy -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-mono uppercase text-indigo-400 tracking-wider">AESTHETIC PHILOSOPHY & PSYCHOLOGY</h4>
+                        <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-light">
+                            ${style.philosophy}
+                        </p>
+                    </div>
+
+                    <!-- Visual Rules & Anatomy -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4 border-y border-white/10 text-xs sm:text-sm">
+                        <div class="space-y-1">
+                            <span class="font-mono text-slate-400 block">TYPOGRAPHY ARCHETYPE:</span>
+                            <span class="text-white font-medium">${style.typography}</span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="font-mono text-slate-400 block">COLOR PALETTE (CLICK TO COPY):</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                ${style.colors.map(c => `
+                                    <div onclick="copyText('${c}', 'Hex ${c}')" title="Copy ${c}" 
+                                         class="w-6 h-6 rounded border border-white/20 cursor-pointer hover:scale-110 transition-transform" 
+                                         style="background: ${c};"></div>
+                                    <span class="font-mono text-[11px] text-slate-400 mr-2">${c}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Master AI Prompt Section -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-mono uppercase text-sky-400 tracking-wider">BATTLE-TESTED MASTER AI PROMPT</h4>
+                            <button onclick="copyStylePrompt('${style.id}')" class="text-xs text-indigo-400 hover:text-indigo-300 font-mono">
+                                [Copy Prompt]
+                            </button>
+                        </div>
+                        <div class="p-4 rounded-xl bg-black/60 border border-white/10 text-xs sm:text-sm text-slate-300 font-mono leading-relaxed select-all">
+                            ${style.prompt}
+                        </div>
+                    </div>
+
+                    <!-- CSS Blueprint -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-mono uppercase text-pink-400 tracking-wider">PRODUCTION CSS TOKENS</h4>
+                            <button onclick="copyStyleCSS('${style.id}')" class="text-xs text-pink-400 hover:text-pink-300 font-mono">
+                                [Copy CSS]
+                            </button>
+                        </div>
+                        <pre class="p-4 rounded-xl bg-black/60 border border-white/10 text-xs text-emerald-400 font-mono overflow-x-auto"><code>${style.cssRules}</code></pre>
+                    </div>
+
+                    <!-- When to Use vs Avoid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs">
+                            <span class="font-mono text-emerald-400 font-bold block mb-1">✓ WHEN TO USE</span>
+                            <p class="text-slate-300 leading-relaxed">${style.whenToUse}</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs">
+                            <span class="font-mono text-rose-400 font-bold block mb-1">✕ WHEN TO AVOID</span>
+                            <p class="text-slate-300 leading-relaxed">${style.whenToAvoid}</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end gap-3">
+                        <button onclick="morphChameleonTo('${style.id}'); closeModal();" class="px-5 py-2 rounded-full bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-500 transition-colors">
+                            Morph 4D Chameleon to This Style
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeModal() {
+            playTone(300, 0.05);
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        document.getElementById('detail-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'detail-modal') closeModal();
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        /* -------------------------------------------------------------
+           9. DOWNLOAD FULL 40 PROMPTS MATRIX (MARKDOWN)
+           ------------------------------------------------------------- */
+        function downloadPromptMatrixMarkdown() {
+            let md = `# 4D Web Design Cosmos — Master Taxonomy & AI Prompt Matrix\n\n`;
+            md += `Generated on ${new Date().toISOString()}\n\n`;
+            md += `This master document contains all 40 web design movements, architectural tokens, and battle-tested generative AI prompts.\n\n---\n\n`;
+
+            WEB_STYLES.forEach((s, idx) => {
+                md += `## ${idx + 1}. ${s.name}\n`;
+                md += `**Era:** ${s.era} | **Category:** ${s.category}\n\n`;
+                md += `### Philosophy & Psychology\n${s.philosophy}\n\n`;
+                md += `### Master Generative AI Prompt\n\`\`\`\n${s.prompt}\n\`\`\`\n\n`;
+                md += `### Production CSS Tokens\n\`\`\`css\n${s.cssRules}\n\`\`\`\n\n`;
+                md += `**Palette:** ${s.colors.join(', ')}\n`;
+                md += `**Typography Archetype:** ${s.typography}\n`;
+                md += `**When to Use:** ${s.whenToUse}\n`;
+                md += `**When to Avoid:** ${s.whenToAvoid}\n\n---\n\n`;
+            });
+
+            const blob = new Blob([md], { type: 'text/markdown;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `40-web-design-master-prompts-matrix.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            playTone(720, 0.15, 'triangle');
+            showToast('Downloaded Complete 40 Styles Prompt Matrix (.md)');
+        }
+
+        /* -------------------------------------------------------------
+           10. TOAST NOTIFICATIONS
+           ------------------------------------------------------------- */
+        let toastTimeout = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toast-text');
+            text.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        /* -------------------------------------------------------------
+           11. PAGE INITIALIZATION
+           ------------------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', () => {
+            initThreeJS();
+            renderStylesGrid(WEB_STYLES);
+            initChameleonPills();
+            compilePrompt();
+
+            // Set default specimen to Glassmorphism
+            morphChameleonTo('glassmorphism');
+
+            // Add haptic audio to cards
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mouseenter', () => playTone(600, 0.03, 'sine'));
+            });
+        });
+    </script>
+</body>
+</html>
